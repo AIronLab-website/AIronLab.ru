@@ -108,6 +108,7 @@ export default function RootLayout({
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link rel="dns-prefetch" href="https://fonts.googleapis.com" />
         <meta name="yandex-verification" content="ea7d4734cdd12e9f" />
+        <meta name="google-site-verification" content="Q-2WXEsKyB23mwdZWG-RQ1kd_qhrCJZDMKII0ky0P8A" />
       </head>
       <body className={`${calleo.className} antialiased bg-background text-foreground overflow-x-hidden`}>
         {children}
