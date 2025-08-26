@@ -1,3 +1,5 @@
+'use client';
+
 import { BlogHeader } from '@/components/layout/BlogHeader';
 import { LightFooter } from '@/components/layout/LightFooter';
 import { Calendar, Clock, ArrowLeft, Tag, User, Share2, BookOpen } from 'lucide-react';
@@ -74,19 +76,19 @@ const blogPosts: BlogPost[] = [
         <li>Бот автоматически создаёт стикер-пак в Telegram и отправляет ссылку пользователю</li>
       </ol>
 
-      <div class="carousel-container mb-8">
-        <div class="carousel-wrapper flex space-x-4 overflow-x-auto">
-          <img src="/images/blog/IMG_5532.jpg" alt="Процесс создания стикеров - шаг 1" class="flex-shrink-0 h-64 w-auto rounded-lg shadow-lg">
-          <img src="/images/blog/IMG_5536.jpg" alt="Процесс создания стикеров - шаг 2" class="flex-shrink-0 h-64 w-auto rounded-lg shadow-lg">
-          <img src="/images/blog/IMG_5534.jpg" alt="Процесс создания стикеров - шаг 3" class="flex-shrink-0 h-64 w-auto rounded-lg shadow-lg">
-          <img src="/images/blog/IMG_5535.jpg" alt="Процесс создания стикеров - шаг 4" class="flex-shrink-0 h-64 w-auto rounded-lg shadow-lg">
+      <div className="carousel-container mb-8">
+        <div className="carousel-wrapper flex space-x-4 overflow-x-auto">
+          <img src="/images/blog/IMG_5532.jpg" alt="Процесс создания стикеров - шаг 1" className="flex-shrink-0 h-64 w-auto rounded-lg shadow-lg" />
+          <img src="/images/blog/IMG_5536.jpg" alt="Процесс создания стикеров - шаг 2" className="flex-shrink-0 h-64 w-auto rounded-lg shadow-lg" />
+          <img src="/images/blog/IMG_5534.jpg" alt="Процесс создания стикеров - шаг 3" className="flex-shrink-0 h-64 w-auto rounded-lg shadow-lg" />
+          <img src="/images/blog/IMG_5535.jpg" alt="Процесс создания стикеров - шаг 4" className="flex-shrink-0 h-64 w-auto rounded-lg shadow-lg" />
         </div>
       </div>
 
       <h2>📊 Результаты: цифры и инсайты</h2>
 
-      <div class="mb-8">
-        <img src="/images/blog/Снимок экрана 2025-08-21 в 14.23.02.png" alt="Результаты проекта" class="w-full rounded-lg shadow-lg">
+      <div className="mb-8">
+        <img src="/images/blog/Снимок экрана 2025-08-21 в 14.23.02.png" alt="Результаты проекта" className="w-full rounded-lg shadow-lg" />
       </div>
 
       <h3>Технические метрики</h3>
@@ -133,8 +135,8 @@ const blogPosts: BlogPost[] = [
 
       <p>Финальное тестирование показало стабильную работу при нагрузке до 100 одновременных пользователей. Развернули на продакшн-серверах с мониторингом.</p>
 
-      <div class="mb-8">
-        <img src="/images/blog/Снимок экрана 2025-08-21 в 14.23.02.png" alt="Результаты проекта" class="w-3/4 mx-auto rounded-lg shadow-lg">
+      <div className="mb-8">
+        <img src="/images/blog/Снимок экрана 2025-08-21 в 14.23.02.png" alt="Результаты проекта" className="w-3/4 mx-auto rounded-lg shadow-lg" />
       </div>
 
       <h3>Пользовательские метрики (первая неделя)</h3>
@@ -224,8 +226,8 @@ const blogPosts: BlogPost[] = [
 
       <p><i>P.S. Бот @NewPeopleStickers_bot работает — можете попробовать сами и оценить качество работы ИИ-команды.</i></p>
 
-      <div class="mb-8 text-center">
-        <img src="/images/blog/лого бот.png" alt="Логотип бота" class="w-64 mx-auto rounded-lg shadow-lg">
+      <div className="mb-8 text-center">
+        <img src="/images/blog/лого бот.png" alt="Логотип бота" className="w-64 mx-auto rounded-lg shadow-lg" />
       </div>
 
       <p><b>Попробовать face-swap бота:</b> @NewPeopleStickers_bot<br>
