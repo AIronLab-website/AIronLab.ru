@@ -44,8 +44,8 @@ const blogPosts: BlogPost[] = [
 
       <h2>Архитектура ИИ-команды</h2>
 
-      <div class="mb-8">
-        <img src="/images/blog/ChatGPT Image 25 авг. 2025 г., 15_43_30.png" alt="Архитектура ИИ-команды" class="w-full rounded-lg shadow-lg">
+      <div className="mb-8">
+        <img src="/images/blog/ChatGPT Image 25 авг. 2025 г., 15_43_30.png" alt="Архитектура ИИ-команды" className="w-full rounded-lg shadow-lg" />
       </div>
 
       <p>Мы создали 5 специализированных агентов:</p>
