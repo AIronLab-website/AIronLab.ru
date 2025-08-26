@@ -1,0 +1,68 @@
+services:
+  reverse-proxy:
+    image: traefik:latest
+    container_name: traefik
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock:ro # Для обнаружения контейнеров
+      - ./traefik:/etc/traefik # Конфигурационные файлы Traefik
+      - traefik-certs:/letsencrypt # Хранение сертификатов
+    command:
+      - "--log.level=DEBUG" # Включаем отладочные логи для диагностики
+      #      - "--api.insecure=true"                        # Опционально: для доступа к dashboard (в проде лучше отключить)
+      - "--providers.docker=true" # Включение провайдера Docker
+      - "--entrypoints.web.address=:80" # HTTP entrypoint
+      - "--entrypoints.websecure.address=:443" # HTTPS entrypoint
+      - "--certificatesresolvers.myresolver.acme.tlschallenge=true"
+      - "--certificatesresolvers.myresolver.acme.email=sa2000gr@gmail.com"
+      - "--certificatesresolvers.myresolver.acme.storage=/letsencrypt/acme.json"
+    restart: unless-stopped
+
+  backend:
+    build:
+      context: ./backend
+      dockerfile: ./Dockerfile
+    container_name: backend
+    ports:
+      - "3001:3001"
+    env_file: ./backend/.env
+    environment:
+      - PORT=3001
+      - NODE_ENV=production
+      - FRONTEND_URL=http://frontend:3000
+      - RATE_LIMIT_WINDOW_MS=900000
+      - RATE_LIMIT_MAX_REQUESTS=5
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.backend.rule=Host(`aironlab.ru`) && PathPrefix(`/api`)" # Поменять тут домен
+      - "traefik.http.routers.backend.entrypoints=web,websecure"
+      - "traefik.http.routers.backend.tls=true"
+      - "traefik.http.routers.backend.tls.certresolver=myresolver"
+      - "traefik.http.services.backend.loadbalancer.server.port=3001" # поставить сюда порт приложения к которому будут идти запросы из сети
+
+    restart: unless-stopped
+
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: ./Dockerfile
+    container_name: frontend
+    ports:
+      - "3000:3000"
+    restart: unless-stopped
+    depends_on:
+      - reverse-proxy
+      - backend
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.frontend.rule=Host(`aironlab.ru`)" # Поменять тут домен
+      - "traefik.http.routers.frontend.entrypoints=web,websecure"
+      - "traefik.http.routers.frontend.tls=true"
+      - "traefik.http.routers.frontend.tls.certresolver=myresolver"
+      - "traefik.http.services.frontend.loadbalancer.server.port=3000" # поставить сюда порт приложения к которому будут идти запросы из сети
+
+volumes:
+  traefik-certs:
+    name: traefik_certs

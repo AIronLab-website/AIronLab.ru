@@ -1,0 +1,23 @@
+entryPoints:
+  web:
+    address: ":80"
+    http:
+      redirections:
+        entryPoint:
+          to: websecure
+          scheme: https
+
+  websecure:
+    address: ":443"
+
+providers:
+  docker:
+    # Контейнеры не маршрутизируются автоматически, если у них нет меток traefik.enable=true
+    exposedByDefault: false
+
+certificatesResolvers:
+  myresolver:
+    acme:
+      email: sa2000gr@gmail.com
+      storage: /letsencrypt/acme.json
+      tlsChallenge: {}
