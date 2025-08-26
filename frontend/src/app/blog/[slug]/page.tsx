@@ -78,12 +78,12 @@ const blogPosts: BlogPost[] = [
         <li>Бот автоматически создаёт стикер-пак в Telegram и отправляет ссылку пользователю</li>
       </ol>
 
-      <div className="carousel-container mb-8">
-        <div className="carousel-wrapper flex space-x-4 overflow-x-auto">
-          <img src="/images/blog/IMG_5532.jpg" alt="Процесс создания стикеров - шаг 1" className="flex-shrink-0 h-64 w-auto rounded-lg shadow-lg" />
-          <img src="/images/blog/IMG_5536.jpg" alt="Процесс создания стикеров - шаг 2" className="flex-shrink-0 h-64 w-auto rounded-lg shadow-lg" />
-          <img src="/images/blog/IMG_5534.jpg" alt="Процесс создания стикеров - шаг 3" className="flex-shrink-0 h-64 w-auto rounded-lg shadow-lg" />
-          <img src="/images/blog/IMG_5535.jpg" alt="Процесс создания стикеров - шаг 4" className="flex-shrink-0 h-64 w-auto rounded-lg shadow-lg" />
+      <div className="mb-8">
+        <div className="flex space-x-4 overflow-x-auto pb-4 scrollbar-hide">
+          <img src="/images/blog/IMG_5532.jpg" alt="Процесс создания стикеров - шаг 1" className="flex-shrink-0 h-64 w-auto rounded-lg shadow-lg hover:shadow-xl transition-shadow duration-300" />
+          <img src="/images/blog/IMG_5536.jpg" alt="Процесс создания стикеров - шаг 2" className="flex-shrink-0 h-64 w-auto rounded-lg shadow-lg hover:shadow-xl transition-shadow duration-300" />
+          <img src="/images/blog/IMG_5534.jpg" alt="Процесс создания стикеров - шаг 3" className="flex-shrink-0 h-64 w-auto rounded-lg shadow-lg hover:shadow-xl transition-shadow duration-300" />
+          <img src="/images/blog/IMG_5535.jpg" alt="Процесс создания стикеров - шаг 4" className="flex-shrink-0 h-64 w-auto rounded-lg shadow-lg hover:shadow-xl transition-shadow duration-300" />
         </div>
       </div>
 
@@ -219,13 +219,13 @@ const blogPosts: BlogPost[] = [
       <p><i>P.S. Бот @NewPeopleStickers_bot работает — можете попробовать сами и оценить качество работы ИИ-команды.</i></p>
 
       <div className="mb-8 text-center">
-        <img src="/images/blog/лого бот.png" alt="Логотип бота" className="w-64 mx-auto rounded-lg shadow-lg" />
+        <img src="/images/blog/лого бот.png" alt="Логотип бота" className="w-32 mx-auto rounded-lg shadow-lg" />
       </div>
 
-      <p><b>Попробовать face-swap бота:</b> @NewPeopleStickers_bot<br>
-      <b>Обсудить автоматизацию для вашего проекта:</b> info@aironlab.ru<br>
-      <b>Наш Telegram канал:</b> https://tlgg.ru/@Aironlab<br>
-      <b>Наш сайт:</b> https://aironlab.ru/</p>
+      <p><b>Попробовать face-swap бота:</b> <a href="https://t.me/NewPeopleStickers_bot" target="_blank" rel="noopener noreferrer" className="text-blue-600 hover:text-blue-800 underline">@NewPeopleStickers_bot</a><br>
+      <b>Обсудить автоматизацию для вашего проекта:</b> <a href="mailto:info@aironlab.ru" className="text-blue-600 hover:text-blue-800 underline">info@aironlab.ru</a><br>
+      <b>Наш Telegram канал:</b> <a href="https://tlgg.ru/@Aironlab" target="_blank" rel="noopener noreferrer" className="text-blue-600 hover:text-blue-800 underline">https://tlgg.ru/@Aironlab</a><br>
+      <b>Наш сайт:</b> <a href="https://aironlab.ru/" target="_blank" rel="noopener noreferrer" className="text-blue-600 hover:text-blue-800 underline">https://aironlab.ru/</a></p>
     `,
     author: 'Александр Гребенщиков',
     date: '2025-01-20',
