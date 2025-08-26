@@ -46,6 +46,10 @@ const blogPosts: BlogPost[] = [
 
       <h2>Архитектура ИИ-команды</h2>
 
+      <div className="mb-8">
+        <img src="/images/blog/ChatGPT Image 25 авг. 2025 г., 15_43_30.png" alt="Архитектура ИИ-команды" className="w-full rounded-lg shadow-lg" />
+      </div>
+
       <p>Мы создали 5 специализированных агентов:</p>
 
       <ol>
@@ -350,16 +354,7 @@ export default function BlogPostPage({ params }: BlogPostPageProps) {
         <div className="py-16">
           <div className="container-custom">
             <div className="max-w-4xl mx-auto">
-              {/* Изображение статьи */}
-              {post.image && (
-                <div className="mb-12">
-                  <img
-                    src={post.image}
-                    alt={post.title}
-                    className="w-full h-64 md:h-96 object-cover rounded-2xl shadow-lg"
-                  />
-                </div>
-              )}
+
 
               {/* Текст статьи */}
               <article className="prose prose-lg max-w-none">
