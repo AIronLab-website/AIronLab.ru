@@ -78,20 +78,7 @@ const blogPosts: BlogPost[] = [
         <li>Бот автоматически создаёт стикер-пак в Telegram и отправляет ссылку пользователю</li>
       </ol>
 
-      <div className="mb-8">
-        <div 
-          className="flex flex-row space-x-4 overflow-x-auto pb-4 snap-x snap-mandatory scrollbar-hide" 
-          style={{
-            WebkitOverflowScrolling: 'touch'
-          }}
-        >
-          <img src="/images/blog/IMG_5532.jpg" alt="Процесс создания стикеров - шаг 1" className="flex-shrink-0 h-64 w-48 object-cover rounded-lg shadow-lg hover:shadow-xl transition-all duration-300 snap-start cursor-pointer" />
-          <img src="/images/blog/IMG_5536.jpg" alt="Процесс создания стикеров - шаг 2" className="flex-shrink-0 h-64 w-48 object-cover rounded-lg shadow-lg hover:shadow-xl transition-all duration-300 snap-start cursor-pointer" />
-          <img src="/images/blog/IMG_5534.jpg" alt="Процесс создания стикеров - шаг 3" className="flex-shrink-0 h-64 w-48 object-cover rounded-lg shadow-lg hover:shadow-xl transition-all duration-300 snap-start cursor-pointer" />
-          <img src="/images/blog/IMG_5535.jpg" alt="Процесс создания стикеров - шаг 4" className="flex-shrink-0 h-64 w-48 object-cover rounded-lg shadow-lg hover:shadow-xl transition-all duration-300 snap-start cursor-pointer" />
-        </div>
 
-      </div>
 
       <h2>Процесс разработки: как ИИ-агенты работают в команде</h2>
 
@@ -225,7 +212,7 @@ const blogPosts: BlogPost[] = [
       <p><i>P.S. Бот @NewPeopleStickers_bot работает — можете попробовать сами и оценить качество работы ИИ-команды.</i></p>
 
       <div className="mb-8 text-center">
-        <img src="/images/blog/лого бот.png" alt="Логотип бота" className="w-4 h-4 mx-auto rounded-lg shadow-lg object-contain" />
+        <img src="/images/blog/лого бот.png" alt="Логотип бота" className="w-16 h-16 mx-auto rounded-lg shadow-lg object-contain" />
       </div>
 
       <p><b>Попробовать face-swap бота:</b> <a href="https://t.me/NewPeopleStickers_bot" target="_blank" rel="noopener noreferrer" className="text-blue-600 hover:text-blue-800 underline">@NewPeopleStickers_bot</a><br />
