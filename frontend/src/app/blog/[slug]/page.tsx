@@ -80,7 +80,7 @@ const blogPosts: BlogPost[] = [
 
       <div className="mb-8">
         <div 
-          className="flex space-x-4 overflow-x-auto pb-4 snap-x snap-mandatory scrollbar-hide" 
+          className="flex flex-row space-x-4 overflow-x-auto pb-4 snap-x snap-mandatory scrollbar-hide" 
           style={{
             WebkitOverflowScrolling: 'touch'
           }}
@@ -225,7 +225,7 @@ const blogPosts: BlogPost[] = [
       <p><i>P.S. Бот @NewPeopleStickers_bot работает — можете попробовать сами и оценить качество работы ИИ-команды.</i></p>
 
       <div className="mb-8 text-center">
-        <img src="/images/blog/лого бот.png" alt="Логотип бота" className="w-16 h-16 mx-auto rounded-lg shadow-lg object-contain" />
+        <img src="/images/blog/лого бот.png" alt="Логотип бота" className="w-8 h-8 mx-auto rounded-lg shadow-lg object-contain" />
       </div>
 
       <p><b>Попробовать face-swap бота:</b> <a href="https://t.me/NewPeopleStickers_bot" target="_blank" rel="noopener noreferrer" className="text-blue-600 hover:text-blue-800 underline">@NewPeopleStickers_bot</a><br />
