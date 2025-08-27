@@ -79,21 +79,12 @@ const blogPosts: BlogPost[] = [
       </ol>
 
       <div className="mb-8">
-        <style dangerouslySetInnerHTML={{
-          __html: `
-            .carousel-container::-webkit-scrollbar {
-              display: none;
-            }
-            .carousel-container {
-              -ms-overflow-style: none;
-              scrollbar-width: none;
-            }
-          `
-        }} />
         <div 
-          className="carousel-container flex space-x-4 overflow-x-auto pb-4 snap-x snap-mandatory" 
+          className="flex space-x-4 overflow-x-auto pb-4 snap-x snap-mandatory scrollbar-hide" 
           style={{
-            WebkitOverflowScrolling: 'touch'
+            WebkitOverflowScrolling: 'touch',
+            msOverflowStyle: 'none',
+            scrollbarWidth: 'none'
           }}
         >
           <img src="/images/blog/IMG_5532.jpg" alt="Процесс создания стикеров - шаг 1" className="flex-shrink-0 h-64 w-auto rounded-lg shadow-lg hover:shadow-xl transition-all duration-300 snap-start cursor-pointer" />
