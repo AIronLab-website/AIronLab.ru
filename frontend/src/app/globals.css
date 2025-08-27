@@ -326,6 +326,16 @@
     background: #a8a8a8;
   }
 
+  /* Утилита для скрытия скроллбаров */
+  .scrollbar-hide {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+  }
+  
+  .scrollbar-hide::-webkit-scrollbar {
+    display: none;
+  }
+
   /* БАЗОВЫЕ НАСТРОЙКИ ДЛЯ МОБИЛЬНЫХ УСТРОЙСТВ */
   html {
     -webkit-text-size-adjust: 100%;

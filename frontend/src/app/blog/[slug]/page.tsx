@@ -82,9 +82,7 @@ const blogPosts: BlogPost[] = [
         <div 
           className="flex space-x-4 overflow-x-auto pb-4 snap-x snap-mandatory scrollbar-hide" 
           style={{
-            WebkitOverflowScrolling: 'touch',
-            msOverflowStyle: 'none',
-            scrollbarWidth: 'none'
+            WebkitOverflowScrolling: 'touch'
           }}
         >
           <img src="/images/blog/IMG_5532.jpg" alt="Процесс создания стикеров - шаг 1" className="flex-shrink-0 h-64 w-auto rounded-lg shadow-lg hover:shadow-xl transition-all duration-300 snap-start cursor-pointer" />
@@ -233,7 +231,6 @@ const blogPosts: BlogPost[] = [
       <p><b>Попробовать face-swap бота:</b> <a href="https://t.me/NewPeopleStickers_bot" target="_blank" rel="noopener noreferrer" className="text-blue-600 hover:text-blue-800 underline">@NewPeopleStickers_bot</a><br />
       <b>Обсудить автоматизацию для вашего проекта:</b> <a href="mailto:info@aironlab.ru" className="text-blue-600 hover:text-blue-800 underline">info@aironlab.ru</a><br />
       <b>Наш Telegram канал:</b> <a href="https://tlgg.ru/@Aironlab" target="_blank" rel="noopener noreferrer" className="text-blue-600 hover:text-blue-800 underline">https://tlgg.ru/@Aironlab</a><br />
-      <b>Наш сайт:</b> <a href="https://aironlab.ru/" target="_blank" rel="noopener noreferrer" className="text-blue-600 hover:text-blue-800 underline">https://aironlab.ru/</a></p>
     `,
     author: 'Александр Гребенщиков',
     date: '2025-08-25',
