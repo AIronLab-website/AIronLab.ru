@@ -24,7 +24,7 @@ const blogPosts: BlogPost[] = [
   {
     id: '5',
     title: 'Как 5 ИИ-агентов за 4 дня создали вирусный face-swap бот для избирательной кампании',
-    excerpt: 'Рассказываем, как команда искусственного интеллекта разработала telegram-бота с технологией замены лиц, который превращает фото пользователей в персональные мемы-стикеры за 60 секунд',
+    excerpt: 'Рассказываем, как команда искусственного интеллекта разработала telegram-бота с технологией замены лиц, который превращает фото пользователей в персональные мемы-стикеры за 3 минуты',
     content: `
       <p>В июле к нам обратилась партия "Новые люди" с нестандартной задачей: нужен был инструмент для предвыборной кампании, который бы не просто информировал избирателей, а создавал эмоциональную связь через персонализированный контент. Идея — telegram-бот, который превращает селфи пользователей в мемы-стикеры.</p>
 
@@ -79,12 +79,29 @@ const blogPosts: BlogPost[] = [
       </ol>
 
       <div className="mb-8">
-        <div className="flex space-x-4 overflow-x-auto pb-4 snap-x snap-mandatory" style={{scrollbarWidth: 'none', msOverflowStyle: 'none'}}>
-          <img src="/images/blog/IMG_5532.jpg" alt="Процесс создания стикеров - шаг 1" className="flex-shrink-0 h-64 w-auto rounded-lg shadow-lg hover:shadow-xl transition-shadow duration-300 snap-start" />
-          <img src="/images/blog/IMG_5536.jpg" alt="Процесс создания стикеров - шаг 2" className="flex-shrink-0 h-64 w-auto rounded-lg shadow-lg hover:shadow-xl transition-shadow duration-300 snap-start" />
-          <img src="/images/blog/IMG_5534.jpg" alt="Процесс создания стикеров - шаг 3" className="flex-shrink-0 h-64 w-auto rounded-lg shadow-lg hover:shadow-xl transition-shadow duration-300 snap-start" />
-          <img src="/images/blog/IMG_5535.jpg" alt="Процесс создания стикеров - шаг 4" className="flex-shrink-0 h-64 w-auto rounded-lg shadow-lg hover:shadow-xl transition-shadow duration-300 snap-start" />
+        <style dangerouslySetInnerHTML={{
+          __html: `
+            .carousel-container::-webkit-scrollbar {
+              display: none;
+            }
+            .carousel-container {
+              -ms-overflow-style: none;
+              scrollbar-width: none;
+            }
+          `
+        }} />
+        <div 
+          className="carousel-container flex space-x-4 overflow-x-auto pb-4 snap-x snap-mandatory" 
+          style={{
+            WebkitOverflowScrolling: 'touch'
+          }}
+        >
+          <img src="/images/blog/IMG_5532.jpg" alt="Процесс создания стикеров - шаг 1" className="flex-shrink-0 h-64 w-auto rounded-lg shadow-lg hover:shadow-xl transition-all duration-300 snap-start cursor-pointer" />
+          <img src="/images/blog/IMG_5536.jpg" alt="Процесс создания стикеров - шаг 2" className="flex-shrink-0 h-64 w-auto rounded-lg shadow-lg hover:shadow-xl transition-all duration-300 snap-start cursor-pointer" />
+          <img src="/images/blog/IMG_5534.jpg" alt="Процесс создания стикеров - шаг 3" className="flex-shrink-0 h-64 w-auto rounded-lg shadow-lg hover:shadow-xl transition-all duration-300 snap-start cursor-pointer" />
+          <img src="/images/blog/IMG_5535.jpg" alt="Процесс создания стикеров - шаг 4" className="flex-shrink-0 h-64 w-auto rounded-lg shadow-lg hover:shadow-xl transition-all duration-300 snap-start cursor-pointer" />
         </div>
+
       </div>
 
       <h2>Процесс разработки: как ИИ-агенты работают в команде</h2>
@@ -219,12 +236,12 @@ const blogPosts: BlogPost[] = [
       <p><i>P.S. Бот @NewPeopleStickers_bot работает — можете попробовать сами и оценить качество работы ИИ-команды.</i></p>
 
       <div className="mb-8 text-center">
-        <img src="/images/blog/лого бот.png" alt="Логотип бота" className="w-16 mx-auto rounded-lg shadow-lg" />
+        <img src="/images/blog/лого бот.png" alt="Логотип бота" className="w-16 h-16 mx-auto rounded-lg shadow-lg object-contain" />
       </div>
 
-      <p><b>Попробовать face-swap бота:</b> <a href="https://t.me/NewPeopleStickers_bot" target="_blank" rel="noopener noreferrer" className="text-blue-600 hover:text-blue-800 underline">@NewPeopleStickers_bot</a><br>
-      <b>Обсудить автоматизацию для вашего проекта:</b> <a href="mailto:info@aironlab.ru" className="text-blue-600 hover:text-blue-800 underline">info@aironlab.ru</a><br>
-      <b>Наш Telegram канал:</b> <a href="https://tlgg.ru/@Aironlab" target="_blank" rel="noopener noreferrer" className="text-blue-600 hover:text-blue-800 underline">https://tlgg.ru/@Aironlab</a><br>
+      <p><b>Попробовать face-swap бота:</b> <a href="https://t.me/NewPeopleStickers_bot" target="_blank" rel="noopener noreferrer" className="text-blue-600 hover:text-blue-800 underline">@NewPeopleStickers_bot</a><br />
+      <b>Обсудить автоматизацию для вашего проекта:</b> <a href="mailto:info@aironlab.ru" className="text-blue-600 hover:text-blue-800 underline">info@aironlab.ru</a><br />
+      <b>Наш Telegram канал:</b> <a href="https://tlgg.ru/@Aironlab" target="_blank" rel="noopener noreferrer" className="text-blue-600 hover:text-blue-800 underline">https://tlgg.ru/@Aironlab</a><br />
       <b>Наш сайт:</b> <a href="https://aironlab.ru/" target="_blank" rel="noopener noreferrer" className="text-blue-600 hover:text-blue-800 underline">https://aironlab.ru/</a></p>
     `,
     author: 'Александр Гребенщиков',
