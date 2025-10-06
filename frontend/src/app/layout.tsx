@@ -1,6 +1,7 @@
 import type { Metadata } from 'next'
 import './globals.css'
 import localFont from 'next/font/local'
+import YandexMetrika from '@/components/analytics/YandexMetrika'
 
 const calleo = localFont({
   src: [
@@ -111,6 +112,7 @@ export default function RootLayout({
         <meta name="google-site-verification" content="Q-2WXEsKyB23mwdZWG-RQ1kd_qhrCJZDMKII0ky0P8A" />
       </head>
       <body className={`${calleo.className} antialiased bg-background text-foreground overflow-x-hidden`}>
+        <YandexMetrika />
         {children}
       </body>
     </html>
