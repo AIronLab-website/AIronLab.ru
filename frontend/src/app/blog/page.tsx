@@ -1,3 +1,4 @@
+import type { Metadata } from 'next';
 import { BlogHeader } from '@/components/layout/BlogHeader';
 import { LightFooter } from '@/components/layout/LightFooter';
 import { Calendar, Clock, ArrowRight, Tag, User } from 'lucide-react';
@@ -43,6 +44,12 @@ const blogPosts: BlogPost[] = [
     slug: 'ai-agents-face-swap-bot'
   }
 ];
+
+export const metadata: Metadata = {
+  alternates: {
+    canonical: '/blog',
+  },
+};
 
 export default function BlogPage() {
   return (

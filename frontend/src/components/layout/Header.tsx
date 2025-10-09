@@ -111,27 +111,49 @@ export const Header: React.FC = () => {
 
           {/* Навигация для десктопа */}
           <div className="hidden lg:flex items-center space-x-1">
-            {navigationItems.map((item, index) => (
-              <button
-                key={item.id}
-                onClick={() => handleNavClick(item.id, item.isExternal, item.href)}
-                data-clickable="true"
-                className={cn(
-                  "px-4 py-2 rounded-lg text-sm font-medium transition-all duration-200 relative",
-                  "hover:scale-105 active:scale-95",
-                  "animate-fade-in",
-                  activeSection === item.id && !item.isExternal
-                    ? "text-accent bg-accent/10"
-                    : "text-foreground/80 hover:text-foreground hover:bg-white/10"
-                )}
-                style={{ animationDelay: `${index * 100}ms` }}
-              >
-                {item.name}
-                {activeSection === item.id && !item.isExternal && (
-                  <div className="absolute inset-0 bg-accent/5 rounded-lg -z-10 animate-scale-in" />
-                )}
-              </button>
-            ))}
+            {navigationItems.map((item, index) => {
+              // Для внешних ссылок (блог) используем <a>, для якорных ссылок - <button>
+              if (item.isExternal) {
+                return (
+                  <a
+                    key={item.id}
+                    href={item.href}
+                    data-clickable="true"
+                    className={cn(
+                      "px-4 py-2 rounded-lg text-sm font-medium transition-all duration-200 relative",
+                      "hover:scale-105 active:scale-95",
+                      "animate-fade-in",
+                      "text-foreground/80 hover:text-foreground hover:bg-white/10"
+                    )}
+                    style={{ animationDelay: `${index * 100}ms` }}
+                  >
+                    {item.name}
+                  </a>
+                );
+              }
+              
+              return (
+                <button
+                  key={item.id}
+                  onClick={() => handleNavClick(item.id, item.isExternal, item.href)}
+                  data-clickable="true"
+                  className={cn(
+                    "px-4 py-2 rounded-lg text-sm font-medium transition-all duration-200 relative",
+                    "hover:scale-105 active:scale-95",
+                    "animate-fade-in",
+                    activeSection === item.id && !item.isExternal
+                      ? "text-accent bg-accent/10"
+                      : "text-foreground/80 hover:text-foreground hover:bg-white/10"
+                  )}
+                  style={{ animationDelay: `${index * 100}ms` }}
+                >
+                  {item.name}
+                  {activeSection === item.id && !item.isExternal && (
+                    <div className="absolute inset-0 bg-accent/5 rounded-lg -z-10 animate-scale-in" />
+                  )}
+                </button>
+              );
+            })}
           </div>
 
           {/* Кнопки действий для десктопа */}
@@ -178,24 +200,46 @@ export const Header: React.FC = () => {
         )}>
           <div className="absolute top-full left-0 right-0 bg-background/95 backdrop-blur-lg border-b border-white/20 shadow-xl z-40">
             <div className="container-custom py-6 space-y-3">
-              {navigationItems.map((item, index) => (
-                <button
-                  key={item.id}
-                  onClick={() => handleNavClick(item.id, item.isExternal, item.href)}
-                  data-clickable="true"
-                  className={cn(
-                    "block w-full text-left px-4 py-3 rounded-lg text-base font-medium",
-                    "transition-all duration-200 active:scale-98",
-                    "animate-slide-up",
-                    activeSection === item.id && !item.isExternal
-                      ? "text-accent bg-accent/10"
-                      : "text-foreground/80 hover:text-foreground hover:bg-white/10"
-                  )}
-                  style={{ animationDelay: `${index * 100}ms` }}
-                >
-                  {item.name}
-                </button>
-              ))}
+              {navigationItems.map((item, index) => {
+                // Для внешних ссылок (блог) используем <a>, для якорных ссылок - <button>
+                if (item.isExternal) {
+                  return (
+                    <a
+                      key={item.id}
+                      href={item.href}
+                      data-clickable="true"
+                      className={cn(
+                        "block w-full text-left px-4 py-3 rounded-lg text-base font-medium",
+                        "transition-all duration-200 active:scale-98",
+                        "animate-slide-up",
+                        "text-foreground/80 hover:text-foreground hover:bg-white/10"
+                      )}
+                      style={{ animationDelay: `${index * 100}ms` }}
+                    >
+                      {item.name}
+                    </a>
+                  );
+                }
+                
+                return (
+                  <button
+                    key={item.id}
+                    onClick={() => handleNavClick(item.id, item.isExternal, item.href)}
+                    data-clickable="true"
+                    className={cn(
+                      "block w-full text-left px-4 py-3 rounded-lg text-base font-medium",
+                      "transition-all duration-200 active:scale-98",
+                      "animate-slide-up",
+                      activeSection === item.id && !item.isExternal
+                        ? "text-accent bg-accent/10"
+                        : "text-foreground/80 hover:text-foreground hover:bg-white/10"
+                    )}
+                    style={{ animationDelay: `${index * 100}ms` }}
+                  >
+                    {item.name}
+                  </button>
+                );
+              })}
               
                               <div className="pt-4 border-t border-white/20 space-y-3">
                   <Button

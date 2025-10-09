@@ -59,9 +59,6 @@ export const metadata: Metadata = {
   publisher: 'AIronLab',
   robots: 'index, follow',
   metadataBase: new URL('https://aironlab.ru'),
-  alternates: {
-    canonical: '/',
-  },
   openGraph: {
     type: 'website',
     locale: 'ru_RU',

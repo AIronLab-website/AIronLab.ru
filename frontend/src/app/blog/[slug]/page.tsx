@@ -1,5 +1,6 @@
 'use client';
 
+import type { Metadata } from 'next';
 import { BlogHeader } from '@/components/layout/BlogHeader';
 import { LightFooter } from '@/components/layout/LightFooter';
 import { Calendar, Clock, ArrowLeft, Tag, User, Share2, BookOpen } from 'lucide-react';
@@ -411,6 +412,16 @@ const blogPosts: BlogPost[] = [
 interface BlogPostPageProps {
   params: {
     slug: string;
+  };
+}
+
+export async function generateMetadata({ params }: BlogPostPageProps): Promise<Metadata> {
+  const post = blogPosts.find(p => p.slug === params.slug);
+  
+  return {
+    alternates: {
+      canonical: `/blog/${params.slug}`,
+    },
   };
 }
 

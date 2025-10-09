@@ -1,4 +1,11 @@
+import type { Metadata } from 'next';
 import { LegalPageLayout } from '@/components/layout/LegalPageLayout';
+
+export const metadata: Metadata = {
+  alternates: {
+    canonical: '/offer',
+  },
+};
 
 export default function OfferPage() {
   return (
