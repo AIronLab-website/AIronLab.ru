@@ -1,7 +1,8 @@
 import type { Metadata } from 'next';
 import { BlogHeader } from '@/components/layout/BlogHeader';
 import { LightFooter } from '@/components/layout/LightFooter';
-import { Calendar, Clock, ArrowLeft, Tag, User, Share2, BookOpen } from 'lucide-react';
+import { ShareButton } from '@/components/ui/ShareButton';
+import { Calendar, Clock, ArrowLeft, Tag, User, BookOpen } from 'lucide-react';
 import { notFound } from 'next/navigation';
 
 // Типы для статей
@@ -493,24 +494,7 @@ export default function BlogPostPage({ params }: BlogPostPageProps) {
               </p>
 
               {/* Кнопка поделиться */}
-              <button 
-                onClick={() => {
-                  if (navigator.share) {
-                    navigator.share({
-                      title: post.title,
-                      text: post.excerpt,
-                      url: window.location.href
-                    });
-                  } else {
-                    navigator.clipboard.writeText(window.location.href);
-                    alert('Ссылка скопирована в буфер обмена!');
-                  }
-                }}
-                className="inline-flex items-center space-x-2 px-4 py-2 bg-gray-100 hover:bg-gray-200 rounded-full text-gray-700 transition-colors duration-200"
-              >
-                <Share2 className="h-4 w-4" />
-                <span>Поделиться</span>
-              </button>
+              <ShareButton title={post.title} excerpt={post.excerpt} />
             </div>
           </div>
         </div>
