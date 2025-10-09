@@ -1,5 +1,3 @@
-'use client';
-
 import type { Metadata } from 'next';
 import { BlogHeader } from '@/components/layout/BlogHeader';
 import { LightFooter } from '@/components/layout/LightFooter';
