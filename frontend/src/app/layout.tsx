@@ -109,6 +109,10 @@ export default function RootLayout({
         <link rel="dns-prefetch" href="https://fonts.googleapis.com" />
         <meta name="yandex-verification" content="ea7d4734cdd12e9f" />
         <meta name="google-site-verification" content="Q-2WXEsKyB23mwdZWG-RQ1kd_qhrCJZDMKII0ky0P8A" />
+        {/* Яндекс Метрика noscript */}
+        <noscript>
+          <img src="https://mc.yandex.ru/watch/104427638" style={{ position: 'absolute', left: '-9999px' }} alt="" />
+        </noscript>
       </head>
       <body className={`${calleo.className} antialiased bg-background text-foreground overflow-x-hidden`}>
         <YandexMetrika />
