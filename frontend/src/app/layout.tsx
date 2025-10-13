@@ -2,6 +2,7 @@ import type { Metadata } from 'next'
 import './globals.css'
 import localFont from 'next/font/local'
 import YandexMetrika from '@/components/analytics/YandexMetrika'
+import MetrikaPageView from '@/components/analytics/MetrikaPageView'
 
 const calleo = localFont({
   src: [
@@ -111,6 +112,7 @@ export default function RootLayout({
       </head>
       <body className={`${calleo.className} antialiased bg-background text-foreground overflow-x-hidden`}>
         <YandexMetrika />
+        <MetrikaPageView />
         {children}
       </body>
     </html>
