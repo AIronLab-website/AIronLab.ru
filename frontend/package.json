@@ -10,7 +10,6 @@
   },
   "dependencies": {
     "@radix-ui/react-slot": "^1.2.3",
-    "@sentry/nextjs": "^10.19.0",
     "@tailwindcss/typography": "^0.5.16",
     "@types/node": "^20.14.14",
     "@types/react": "^18.3.3",
