@@ -102,6 +102,23 @@ export function SearchBar({
     }
   };
 
+  // Global keyboard shortcut (Cmd/Ctrl + K) to focus search
+  useEffect(() => {
+    const handleGlobalKeyDown = (event: KeyboardEvent) => {
+      // Check for Cmd+K (Mac) or Ctrl+K (Windows/Linux)
+      if ((event.metaKey || event.ctrlKey) && event.key === "k") {
+        event.preventDefault();
+        inputRef.current?.focus();
+        inputRef.current?.select();
+      }
+    };
+
+    window.addEventListener("keydown", handleGlobalKeyDown);
+    return () => {
+      window.removeEventListener("keydown", handleGlobalKeyDown);
+    };
+  }, []);
+
   // Cleanup timer on unmount
   useEffect(() => {
     return () => {
@@ -120,9 +137,9 @@ export function SearchBar({
       <div
         className={cn(
           "relative flex items-center",
-          "glass-effect rounded-xl border border-white/20",
+          "bg-white/50 backdrop-blur-sm rounded-2xl border border-white/20",
           "transition-all duration-300",
-          "focus-within:border-accent focus-within:shadow-lg focus-within:shadow-accent/20",
+          "focus-within:border-accent focus-within:ring-2 focus-within:ring-accent/20",
           "mobile-friendly-touch"
         )}
       >
@@ -209,6 +226,19 @@ export function SearchBar({
           aria-live="polite"
         >
           Поиск по запросу: <span className="font-medium text-foreground">&quot;{searchQuery}&quot;</span>
+        </div>
+      )}
+
+      {/* Keyboard Shortcut Hint */}
+      {!searchQuery && (
+        <div className="mt-2 text-xs text-muted-foreground/70 flex items-center gap-2">
+          <span>Нажмите</span>
+          <kbd className="px-2 py-1 bg-gray-100 border border-gray-300 rounded text-xs font-mono">
+            {typeof navigator !== "undefined" && navigator.platform.includes("Mac") ? "⌘" : "Ctrl"}
+          </kbd>
+          <span>+</span>
+          <kbd className="px-2 py-1 bg-gray-100 border border-gray-300 rounded text-xs font-mono">K</kbd>
+          <span>для быстрого поиска</span>
         </div>
       )}
     </div>

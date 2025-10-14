@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useState } from "react";
-import { X } from "lucide-react";
+import { X, Filter } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { Badge } from "@/components/ui/badge";
 import type { BlogTag } from "@/types/blog";
@@ -61,75 +61,85 @@ export function TagFilter({
 
   return (
     <div className={cn("w-full", className)}>
-      {/* Filter Header */}
-      <div className="flex items-center justify-between mb-4">
-        <h3 className="text-responsive-h4">Фильтр по тегам</h3>
-        {showClearAll && selectedTags.length > 0 && (
+      {/* Sticky Glass Bar */}
+      <div className="sticky top-0 z-10 bg-white/80 backdrop-blur-lg border-b border-white/20 py-4 -mx-4 px-4 md:-mx-8 md:px-8">
+        {/* Filter Header */}
+        <div className="flex items-center justify-between mb-4">
+          <div className="flex items-center gap-2">
+            <Filter className="h-5 w-5 text-accent" aria-hidden="true" />
+            <h3 className="text-responsive-h4">Фильтр по тегам</h3>
+            {selectedTags.length > 0 && (
+              <span className="flex items-center justify-center h-6 w-6 rounded-full bg-accent text-white text-xs font-bold">
+                {selectedTags.length}
+              </span>
+            )}
+          </div>
+          {showClearAll && selectedTags.length > 0 && (
+            <button
+              onClick={handleClearAll}
+              className={cn(
+                "flex items-center gap-2 px-3 py-1.5 rounded-full",
+                "text-sm font-medium text-muted-foreground",
+                "hover:text-accent hover:bg-accent/10",
+                "transition-all duration-200",
+                "focus:outline-none focus:ring-2 focus:ring-accent focus:ring-offset-2"
+              )}
+              aria-label="Clear all filters"
+            >
+              <X className="h-4 w-4" aria-hidden="true" />
+              <span>Очистить</span>
+            </button>
+          )}
+        </div>
+
+        {/* Tags Container */}
+        <div
+          className={cn(
+            "flex gap-2 overflow-x-auto scrollbar-hide pb-2",
+            "mobile-friendly-touch"
+          )}
+          role="group"
+          aria-label="Tag filter buttons"
+        >
+          {/* All Tags Button */}
           <button
             onClick={handleClearAll}
             className={cn(
-              "flex items-center gap-2 px-3 py-1.5 rounded-lg",
-              "text-sm font-medium text-muted-foreground",
-              "hover:text-accent hover:bg-accent/10",
-              "transition-all duration-200",
-              "focus:outline-none focus:ring-2 focus:ring-accent focus:ring-offset-2"
+              "flex-shrink-0 px-4 py-2 rounded-full font-medium text-sm",
+              "transition-all duration-200 ease-out",
+              "focus:outline-none focus:ring-2 focus:ring-accent focus:ring-offset-2",
+              "mobile-friendly-touch",
+              isAllActive
+                ? "bg-accent text-white shadow-lg shadow-accent/30"
+                : "bg-gray-100 text-gray-700 hover:bg-gray-200 hover:scale-105"
             )}
-            aria-label="Clear all filters"
+            aria-pressed={isAllActive}
+            aria-label="Show all posts"
           >
-            <X className="h-4 w-4" aria-hidden="true" />
-            <span>Очистить</span>
+            Все
           </button>
-        )}
-      </div>
 
-      {/* Tags Container */}
-      <div
-        className={cn(
-          "flex gap-2 overflow-x-auto scrollbar-hide pb-2",
-          "mobile-friendly-touch"
-        )}
-        role="group"
-        aria-label="Tag filter buttons"
-      >
-        {/* All Tags Button */}
-        <button
-          onClick={handleClearAll}
-          className={cn(
-            "flex-shrink-0 px-4 py-2 rounded-lg font-medium text-sm",
-            "transition-all duration-300 ease-out",
-            "focus:outline-none focus:ring-2 focus:ring-accent focus:ring-offset-2",
-            "mobile-friendly-touch",
-            isAllActive
-              ? "bg-accent text-white shadow-lg shadow-accent/30 scale-105"
-              : "glass-effect text-foreground hover:bg-accent/10 hover:scale-105"
-          )}
-          aria-pressed={isAllActive}
-          aria-label="Show all posts"
-        >
-          Все
-        </button>
+          {/* Individual Tag Buttons */}
+          {visibleTags.map((tag) => {
+            const isActive = selectedTags.includes(tag.slug);
 
-        {/* Individual Tag Buttons */}
-        {visibleTags.map((tag) => {
-          const isActive = selectedTags.includes(tag.slug);
-
-          return (
-            <button
-              key={tag.id}
-              onClick={() => handleTagClick(tag.slug)}
-              className={cn(
-                "flex-shrink-0 px-4 py-2 rounded-lg font-medium text-sm",
-                "transition-all duration-300 ease-out",
-                "focus:outline-none focus:ring-2 focus:ring-accent focus:ring-offset-2",
-                "mobile-friendly-touch",
-                "relative overflow-hidden",
-                isActive
-                  ? "bg-accent text-white shadow-lg shadow-accent/30 scale-105"
-                  : "glass-effect text-foreground hover:bg-accent/10 hover:scale-105"
-              )}
-              aria-pressed={isActive}
-              aria-label={`Filter by ${tag.name} tag${tag.postCount ? ` (${tag.postCount} posts)` : ""}`}
-            >
+            return (
+              <button
+                key={tag.id}
+                onClick={() => handleTagClick(tag.slug)}
+                className={cn(
+                  "flex-shrink-0 px-4 py-2 rounded-full font-medium text-sm",
+                  "transition-all duration-200 ease-out",
+                  "focus:outline-none focus:ring-2 focus:ring-accent focus:ring-offset-2",
+                  "mobile-friendly-touch",
+                  "relative overflow-hidden",
+                  isActive
+                    ? "bg-accent text-white shadow-lg shadow-accent/30"
+                    : "bg-gray-100 text-gray-700 hover:bg-gray-200 hover:scale-105"
+                )}
+                aria-pressed={isActive}
+                aria-label={`Filter by ${tag.name} tag${tag.postCount ? ` (${tag.postCount} posts)` : ""}`}
+              >
               {/* Active Indicator Animation */}
               {isActive && (
                 <span
@@ -156,52 +166,41 @@ export function TagFilter({
           );
         })}
 
-        {/* Show More Button */}
-        {hasMoreTags && !showAll && (
-          <button
-            onClick={() => setShowAll(true)}
-            className={cn(
-              "flex-shrink-0 px-4 py-2 rounded-lg font-medium text-sm",
-              "glass-effect text-accent hover:bg-accent/10 hover:scale-105",
-              "transition-all duration-300 ease-out",
-              "focus:outline-none focus:ring-2 focus:ring-accent focus:ring-offset-2",
-              "mobile-friendly-touch"
-            )}
-            aria-label={`Show ${tags.length - maxVisibleTags} more tags`}
-          >
-            Показать еще ({tags.length - maxVisibleTags})
-          </button>
-        )}
+          {/* Show More Button */}
+          {hasMoreTags && !showAll && (
+            <button
+              onClick={() => setShowAll(true)}
+              className={cn(
+                "flex-shrink-0 px-4 py-2 rounded-full font-medium text-sm",
+                "bg-gray-100 text-accent hover:bg-gray-200 hover:scale-105",
+                "transition-all duration-200 ease-out",
+                "focus:outline-none focus:ring-2 focus:ring-accent focus:ring-offset-2",
+                "mobile-friendly-touch"
+              )}
+              aria-label={`Show ${tags.length - maxVisibleTags} more tags`}
+            >
+              Показать еще ({tags.length - maxVisibleTags})
+            </button>
+          )}
 
-        {/* Show Less Button */}
-        {hasMoreTags && showAll && (
-          <button
-            onClick={() => setShowAll(false)}
-            className={cn(
-              "flex-shrink-0 px-4 py-2 rounded-lg font-medium text-sm",
-              "glass-effect text-accent hover:bg-accent/10 hover:scale-105",
-              "transition-all duration-300 ease-out",
-              "focus:outline-none focus:ring-2 focus:ring-accent focus:ring-offset-2",
-              "mobile-friendly-touch"
-            )}
-            aria-label="Show fewer tags"
-          >
-            Скрыть
-          </button>
-        )}
-      </div>
-
-      {/* Active Filters Summary */}
-      {selectedTags.length > 0 && (
-        <div className="mt-4 p-3 rounded-lg glass-effect animate-slide-down">
-          <p className="text-sm text-muted-foreground">
-            Активные фильтры:{" "}
-            <span className="font-medium text-foreground">
-              {selectedTags.length} {selectedTags.length === 1 ? "тег" : "тега"}
-            </span>
-          </p>
+          {/* Show Less Button */}
+          {hasMoreTags && showAll && (
+            <button
+              onClick={() => setShowAll(false)}
+              className={cn(
+                "flex-shrink-0 px-4 py-2 rounded-full font-medium text-sm",
+                "bg-gray-100 text-accent hover:bg-gray-200 hover:scale-105",
+                "transition-all duration-200 ease-out",
+                "focus:outline-none focus:ring-2 focus:ring-accent focus:ring-offset-2",
+                "mobile-friendly-touch"
+              )}
+              aria-label="Show fewer tags"
+            >
+              Скрыть
+            </button>
+          )}
         </div>
-      )}
+      </div>
     </div>
   );
 }

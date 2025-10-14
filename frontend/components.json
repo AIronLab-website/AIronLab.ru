@@ -10,19 +10,12 @@
     "cssVariables": true,
     "prefix": ""
   },
-  "iconLibrary": "lucide",
   "aliases": {
     "components": "@/components",
     "utils": "@/lib/utils",
     "ui": "@/components/ui",
     "lib": "@/lib",
     "hooks": "@/hooks"
-  },
-  "registries": {
-    "@shadcn": "https://ui.shadcn.com/registry/{name}.json",
-    "@aceternity": "https://ui.aceternity.com/registry/{name}.json",
-    "@kokonutui": "https://kokonutui.com/r/{name}.json",
-    "@reui": "https://reui.io/r/{name}.json"
   }
 }
 

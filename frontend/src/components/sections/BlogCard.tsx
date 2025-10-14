@@ -54,9 +54,9 @@ export function BlogCard({ post, variant = "standard", className }: BlogCardProp
         href={`/blog/${post.slug}`}
         className={cn(
           "group block relative overflow-hidden rounded-2xl",
-          "glass-effect border border-white/20",
-          "transition-all duration-500 ease-out",
-          "hover:scale-[1.02] hover:shadow-2xl hover:shadow-accent/20",
+          "bg-white/70 backdrop-blur-sm border border-gray-100",
+          "transition-all duration-300 ease-out",
+          "hover:scale-[1.02] hover:shadow-2xl hover:border-accent/30",
           "focus:outline-none focus:ring-2 focus:ring-accent focus:ring-offset-2",
           className
         )}
@@ -159,9 +159,9 @@ export function BlogCard({ post, variant = "standard", className }: BlogCardProp
         href={`/blog/${post.slug}`}
         className={cn(
           "group block overflow-hidden rounded-xl",
-          "glass-effect border border-white/20",
+          "bg-white/70 backdrop-blur-sm border border-gray-100",
           "transition-all duration-300 ease-out",
-          "hover:scale-105 hover:shadow-xl hover:shadow-accent/10",
+          "hover:scale-[1.02] hover:shadow-2xl hover:border-accent/30",
           "focus:outline-none focus:ring-2 focus:ring-accent focus:ring-offset-2",
           "h-full flex flex-col",
           className
@@ -176,6 +176,7 @@ export function BlogCard({ post, variant = "standard", className }: BlogCardProp
             fill
             className="object-cover transition-transform duration-500 group-hover:scale-110"
             sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+            loading="lazy"
           />
           {/* Category Badge Overlay */}
           <div className="absolute top-4 left-4">
@@ -249,9 +250,9 @@ export function BlogCard({ post, variant = "standard", className }: BlogCardProp
       href={`/blog/${post.slug}`}
       className={cn(
         "group flex gap-4 p-4 rounded-lg",
-        "glass-effect border border-white/20",
+        "bg-white/70 backdrop-blur-sm border border-gray-100",
         "transition-all duration-300 ease-out",
-        "hover:scale-[1.02] hover:shadow-lg hover:shadow-accent/10",
+        "hover:scale-[1.02] hover:shadow-2xl hover:border-accent/30",
         "focus:outline-none focus:ring-2 focus:ring-accent focus:ring-offset-2",
         className
       )}
@@ -265,6 +266,7 @@ export function BlogCard({ post, variant = "standard", className }: BlogCardProp
           fill
           className="object-cover transition-transform duration-500 group-hover:scale-110"
           sizes="(max-width: 768px) 80px, 96px"
+          loading="lazy"
         />
       </div>
 
