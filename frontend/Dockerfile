@@ -3,10 +3,10 @@ FROM node:24-alpine AS deps
 WORKDIR /app
 
 # Copy package files
-COPY package*.json ./
+COPY package.json package-lock.json ./
 
 # Install production dependencies only
-RUN npm ci --only=production && \
+RUN npm ci --omit=dev && \
     npm cache clean --force
 
 # Stage 2: Builder
@@ -14,7 +14,7 @@ FROM node:24-alpine AS builder
 WORKDIR /app
 
 # Copy package files
-COPY package*.json ./
+COPY package.json package-lock.json ./
 
 # Install all dependencies (including dev)
 RUN npm ci && \
