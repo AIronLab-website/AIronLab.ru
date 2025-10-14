@@ -3,7 +3,7 @@
 import React from "react";
 import Link from "next/link";
 import Image from "next/image";
-import { Calendar, Clock, ArrowRight } from "lucide-react";
+import { Calendar, Clock, ArrowRight, Sparkles, Brain, Cpu, Bot, Network } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { Badge } from "@/components/ui/badge";
 import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar";
@@ -54,14 +54,29 @@ export function BlogCard({ post, variant = "standard", className }: BlogCardProp
         href={`/blog/${post.slug}`}
         className={cn(
           "group block relative overflow-hidden rounded-2xl",
-          "bg-white/70 backdrop-blur-sm border border-gray-100",
+          "bg-white/50 backdrop-blur-md border border-gray-100",
           "transition-all duration-300 ease-out",
           "hover:scale-[1.02] hover:shadow-2xl hover:border-accent/30",
           "focus:outline-none focus:ring-2 focus:ring-accent focus:ring-offset-2",
+          "animate-slide-up",
           className
         )}
         aria-label={`Read article: ${post.title}`}
       >
+        {/* Floating AI Icons */}
+        <div className="absolute top-8 right-8 text-accent/10 animate-float pointer-events-none" aria-hidden="true">
+          <Brain className="h-16 w-16 md:h-20 md:w-20" />
+        </div>
+        <div className="absolute top-20 left-12 text-purple-400/10 animate-float-delayed pointer-events-none" aria-hidden="true">
+          <Cpu className="h-12 w-12 md:h-16 md:w-16" />
+        </div>
+        <div className="absolute top-32 right-24 text-blue-400/10 animate-float pointer-events-none" aria-hidden="true">
+          <Bot className="h-14 w-14 md:h-18 md:w-18" />
+        </div>
+        <div className="absolute top-16 left-32 text-accent/10 animate-float-delayed pointer-events-none" aria-hidden="true">
+          <Network className="h-10 w-10 md:h-14 md:w-14" />
+        </div>
+
         {/* Featured Image Container */}
         <div className="relative h-[400px] md:h-[500px] lg:h-[600px] w-full overflow-hidden">
           <Image
@@ -78,8 +93,12 @@ export function BlogCard({ post, variant = "standard", className }: BlogCardProp
 
         {/* Content Overlay */}
         <div className="absolute bottom-0 left-0 right-0 p-6 md:p-8 lg:p-12">
-          {/* Category Badge */}
-          <div className="mb-4">
+          {/* Featured Badge + Category */}
+          <div className="mb-4 flex flex-wrap items-center gap-3">
+            <Badge className="bg-gradient-to-r from-yellow-400 to-orange-500 text-white hover:from-yellow-500 hover:to-orange-600 text-sm md:text-base px-4 py-1.5 flex items-center gap-2">
+              <Sparkles className="h-4 w-4" aria-hidden="true" />
+              <span>Рекомендуем</span>
+            </Badge>
             <Badge
               className="bg-accent text-white hover:bg-accent/90 text-sm md:text-base px-4 py-1.5"
               style={{ backgroundColor: post.category.color || "#6366F1" }}

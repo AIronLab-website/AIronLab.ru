@@ -4,6 +4,7 @@ import React from "react";
 import { BlogCard } from "./BlogCard";
 import { TagFilter } from "./TagFilter";
 import { SearchBar } from "./SearchBar";
+import { NewsletterCTA } from "./NewsletterCTA";
 import { useBlogSearch } from "@/hooks/useBlogSearch";
 import { getUniqueTags } from "@/lib/blogUtils";
 import type { BlogPostPreview } from "@/types/blog";
@@ -14,6 +15,7 @@ interface BlogSectionProps {
   featuredPost?: BlogPostPreview;
   showSearch?: boolean;
   showTagFilter?: boolean;
+  showNewsletter?: boolean;
   className?: string;
   title?: string;
   description?: string;
@@ -36,6 +38,7 @@ export function BlogSection({
   featuredPost,
   showSearch = true,
   showTagFilter = true,
+  showNewsletter = true,
   className,
   title = "Блог AIronLab",
   description = "Статьи и инсайты о разработке AI-решений",
@@ -160,6 +163,13 @@ export function BlogSection({
               </button>
             )}
           </div>
+        </div>
+      )}
+
+      {/* Newsletter CTA */}
+      {showNewsletter && (
+        <div className="mt-16 md:mt-20 animate-fade-in">
+          <NewsletterCTA />
         </div>
       )}
     </section>
