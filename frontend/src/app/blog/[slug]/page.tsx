@@ -10,9 +10,7 @@ import {
   AuthorSection,
   InfoCallout,
   ShareBar,
-  BookmarkButton,
   RelatedPosts,
-  CommentsSection,
 } from '@/components/sections/blog';
 import { mockBlogPosts, mockFullBlogPost } from '@/lib/mockBlogData';
 import { notFound } from 'next/navigation';
@@ -579,7 +577,6 @@ export default function BlogPostPage({ params }: BlogPostPageProps) {
                   {/* Action Buttons */}
                   <div className="mb-8 not-prose flex flex-wrap gap-4">
                     <ShareButton title={post.title} excerpt={post.excerpt} />
-                    <BookmarkButton postId={post.id} postTitle={post.title} />
                   </div>
 
                   {/* Article Content */}
@@ -601,13 +598,6 @@ export default function BlogPostPage({ params }: BlogPostPageProps) {
           currentPost={post}
           allPosts={mockBlogPosts}
           maxPosts={3}
-        />
-
-        {/* Comments Section */}
-        <CommentsSection
-          postId={post.id}
-          postAuthorId={post.author.id}
-          allowComments={post.allowComments}
         />
       </main>
 
