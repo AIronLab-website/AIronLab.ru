@@ -1,12 +1,15 @@
 "use client";
 
-import React from "react";
+import React, { useEffect } from "react";
 import { BlogCard } from "./BlogCard";
+import { FeaturedPost } from "./blog/FeaturedPost";
+import { EmptyState } from "./blog/EmptyState";
 import { TagFilter } from "./TagFilter";
 import { SearchBar } from "./SearchBar";
 import { NewsletterCTA } from "./NewsletterCTA";
 import { useBlogSearch } from "@/hooks/useBlogSearch";
 import { getUniqueTags } from "@/lib/blogUtils";
+import { trackBlogSearch, trackBlogTagFilter, trackBlogFilterClear } from "@/lib/analytics";
 import type { BlogPostPreview } from "@/types/blog";
 import { cn } from "@/lib/utils";
 
@@ -51,13 +54,40 @@ export function BlogSection({
     handleTagSelect,
     handleTagDeselect,
     clearTags,
+    clearAllFilters,
     hasActiveFilters,
+    activeFiltersCount,
     resultsCount,
     totalCount,
   } = useBlogSearch({ posts });
 
   // Get unique tags from all posts
   const availableTags = getUniqueTags(posts);
+
+  // Track search queries (debounced)
+  useEffect(() => {
+    if (searchQuery.trim()) {
+      const timer = setTimeout(() => {
+        trackBlogSearch(searchQuery);
+      }, 1000); // Track after 1 second of no typing
+      return () => clearTimeout(timer);
+    }
+  }, [searchQuery]);
+
+  // Track tag filter changes
+  useEffect(() => {
+    if (selectedTags.length > 0) {
+      selectedTags.forEach(tag => {
+        trackBlogTagFilter(tag, selectedTags.length);
+      });
+    }
+  }, [selectedTags]);
+
+  // Enhanced clear filters with analytics
+  const handleClearAllFilters = () => {
+    trackBlogFilterClear();
+    clearAllFilters();
+  };
 
   return (
     <section className={cn("spacing-responsive container-custom", className)}>
@@ -71,9 +101,7 @@ export function BlogSection({
 
       {/* Featured Post */}
       {featuredPost && !hasActiveFilters && (
-        <div className="mb-12 md:mb-16 animate-fade-in">
-          <BlogCard post={featuredPost} variant="featured" />
-        </div>
+        <FeaturedPost post={featuredPost} />
       )}
 
       {/* Search and Filter Controls */}
@@ -103,19 +131,43 @@ export function BlogSection({
         </div>
       )}
 
-      {/* Results Summary */}
+      {/* Results Summary with Active Filters Badge */}
       {hasActiveFilters && (
         <div className="mb-8 p-4 rounded-lg glass-effect border border-white/20 animate-slide-down">
-          <p className="text-sm text-muted-foreground">
-            Найдено статей:{" "}
-            <span className="font-bold text-foreground text-lg">{resultsCount}</span>{" "}
-            из {totalCount}
-            {searchQuery && (
-              <span className="ml-2">
-                по запросу <span className="font-medium text-foreground">&quot;{searchQuery}&quot;</span>
-              </span>
-            )}
-          </p>
+          <div className="flex items-center justify-between gap-4 flex-wrap">
+            <div className="flex items-center gap-3">
+              <p className="text-sm text-muted-foreground">
+                Найдено статей:{" "}
+                <span className="font-bold text-foreground text-lg">{resultsCount}</span>{" "}
+                из {totalCount}
+                {searchQuery && (
+                  <span className="ml-2">
+                    по запросу <span className="font-medium text-foreground">&quot;{searchQuery}&quot;</span>
+                  </span>
+                )}
+              </p>
+              {/* Active Filters Count Badge */}
+              {activeFiltersCount > 0 && (
+                <div className="inline-flex items-center gap-2 px-3 py-1 bg-accent/10 border border-accent/20 rounded-full">
+                  <span className="text-xs font-medium text-accent">
+                    Активных фильтров: {activeFiltersCount}
+                  </span>
+                </div>
+              )}
+            </div>
+            {/* Clear All Filters Button */}
+            <button
+              onClick={handleClearAllFilters}
+              className={cn(
+                "px-4 py-2 rounded-lg text-sm font-medium",
+                "bg-gray-100 hover:bg-gray-200 text-gray-700",
+                "transition-colors duration-200",
+                "focus:outline-none focus:ring-2 focus:ring-accent focus:ring-offset-2"
+              )}
+            >
+              Сбросить все фильтры
+            </button>
+          </div>
         </div>
       )}
 
@@ -134,36 +186,10 @@ export function BlogSection({
         </div>
       ) : (
         /* Empty State */
-        <div className="text-center py-16 animate-fade-in">
-          <div className="max-w-md mx-auto">
-            <div className="text-6xl mb-4" role="img" aria-label="No results">
-              📝
-            </div>
-            <h3 className="text-responsive-h3 mb-4">Статьи не найдены</h3>
-            <p className="text-responsive-body text-muted-foreground mb-6">
-              {hasActiveFilters
-                ? "Попробуйте изменить параметры поиска или фильтры"
-                : "В данный момент статьи отсутствуют"}
-            </p>
-            {hasActiveFilters && (
-              <button
-                onClick={() => {
-                  setSearchQuery("");
-                  clearTags();
-                }}
-                className={cn(
-                  "px-6 py-3 rounded-lg",
-                  "bg-accent text-white font-medium",
-                  "hover:bg-accent/90 hover:scale-105",
-                  "transition-all duration-300",
-                  "focus:outline-none focus:ring-2 focus:ring-accent focus:ring-offset-2"
-                )}
-              >
-                Сбросить фильтры
-              </button>
-            )}
-          </div>
-        </div>
+        <EmptyState
+          type={hasActiveFilters ? "no-results" : "no-posts"}
+          onReset={hasActiveFilters ? handleClearAllFilters : undefined}
+        />
       )}
 
       {/* Newsletter CTA */}

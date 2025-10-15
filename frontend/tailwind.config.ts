@@ -44,6 +44,10 @@ const config: Config = {
         "scale-in": "scale-in 0.3s ease-out",
         "spin-in": "spin-in 0.2s ease-out",
         "pulse-slow": "pulse 3s ease-in-out infinite",
+        "float": "float 3s ease-in-out infinite",
+        "float-delayed": "float 3s ease-in-out infinite 1.5s",
+        "shimmer": "shimmer 2s infinite linear",
+        "bounce-subtle": "bounce-subtle 2s ease-in-out infinite",
       },
       keyframes: {
         "fade-in": {
@@ -65,6 +69,18 @@ const config: Config = {
         "spin-in": {
           "0%": { transform: "rotate(-90deg) scale(0.8)", opacity: "0" },
           "100%": { transform: "rotate(0deg) scale(1)", opacity: "1" },
+        },
+        "float": {
+          "0%, 100%": { transform: "translateY(0px)" },
+          "50%": { transform: "translateY(-20px)" },
+        },
+        "shimmer": {
+          "0%": { transform: "translateX(-100%)" },
+          "100%": { transform: "translateX(100%)" },
+        },
+        "bounce-subtle": {
+          "0%, 100%": { transform: "translateY(0)" },
+          "50%": { transform: "translateY(-10px)" },
         },
       },
       backdropBlur: {

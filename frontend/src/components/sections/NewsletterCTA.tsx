@@ -1,9 +1,17 @@
 "use client";
 
 import React, { useState } from "react";
-import { Mail, Bell, Send, Check } from "lucide-react";
+import { Mail, Bell, Send, Check, Sparkles } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { Input } from "@/components/ui/input";
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+  DialogDescription,
+} from "@/components/ui/dialog";
+import { trackNewsletterSubscribe, trackNewsletterError } from "@/lib/analytics";
 
 interface NewsletterCTAProps {
   className?: string;
@@ -30,7 +38,7 @@ export function NewsletterCTA({
 }: NewsletterCTAProps) {
   const [email, setEmail] = useState("");
   const [isSubmitting, setIsSubmitting] = useState(false);
-  const [isSuccess, setIsSuccess] = useState(false);
+  const [showThankYouModal, setShowThankYouModal] = useState(false);
   const [error, setError] = useState("");
 
   const validateEmail = (email: string) => {
@@ -49,25 +57,49 @@ export function NewsletterCTA({
 
     setIsSubmitting(true);
 
-    // Simulate API call
-    setTimeout(() => {
-      setIsSubmitting(false);
-      setIsSuccess(true);
-      setEmail("");
+    try {
+      // Call API endpoint
+      const response = await fetch('/api/newsletter/subscribe', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ 
+          email,
+          source: 'blog' // Track subscription source
+        }),
+      });
 
-      // Reset success state after 5 seconds
-      setTimeout(() => {
-        setIsSuccess(false);
-      }, 5000);
-    }, 1000);
+      const data = await response.json();
+
+      if (!response.ok) {
+        throw new Error(data.error || 'Subscription failed');
+      }
+
+      // Track successful subscription
+      trackNewsletterSubscribe(email, 'blog');
+
+      // Show success modal
+      setShowThankYouModal(true);
+      setEmail("");
+      
+    } catch (err) {
+      const errorMessage = err instanceof Error ? err.message : 'Произошла ошибка при подписке';
+      setError(errorMessage);
+      
+      // Track error
+      trackNewsletterError(errorMessage);
+      
+      console.error('[Newsletter] Subscription error:', err);
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   return (
     <div
       className={cn(
         "relative overflow-hidden rounded-3xl",
-        "bg-gradient-to-br from-accent/10 via-purple-50 to-blue-50",
-        "border border-white/20",
+        "bg-gradient-to-br from-accent/10 via-white/50 to-white/30",
+        "backdrop-blur-sm border border-white/30 shadow-xl",
         "p-8 md:p-12",
         className
       )}
@@ -76,7 +108,7 @@ export function NewsletterCTA({
       <div className="absolute top-8 right-8 text-accent/20 animate-float" aria-hidden="true">
         <Mail className="h-16 w-16 md:h-20 md:w-20" />
       </div>
-      <div className="absolute bottom-8 left-8 text-purple-400/20 animate-float-delayed" aria-hidden="true">
+      <div className="absolute bottom-8 left-8 text-accent/15 animate-float-delayed" aria-hidden="true">
         <Bell className="h-12 w-12 md:h-16 md:w-16" />
       </div>
 
@@ -90,20 +122,8 @@ export function NewsletterCTA({
           </p>
         </div>
 
-        {/* Success State */}
-        {isSuccess ? (
-          <div className="p-6 rounded-2xl bg-green-50 border border-green-200 animate-scale-in">
-            <div className="flex items-center justify-center gap-3 text-green-700">
-              <Check className="h-6 w-6" aria-hidden="true" />
-              <p className="text-lg font-medium">Спасибо за подписку!</p>
-            </div>
-            <p className="text-sm text-green-600 mt-2">
-              Мы отправили вам письмо для подтверждения
-            </p>
-          </div>
-        ) : (
-          /* Form */
-          <form onSubmit={handleSubmit} className="space-y-4">
+        {/* Form */}
+        <form onSubmit={handleSubmit} className="space-y-4">
             <div className="flex flex-col sm:flex-row gap-3">
               {/* Email Input */}
               <div className="flex-1">
@@ -172,8 +192,57 @@ export function NewsletterCTA({
               <span>Без спама. Отписаться можно в любой момент.</span>
             </p>
           </form>
-        )}
       </div>
+
+      {/* Thank You Modal */}
+      <Dialog open={showThankYouModal} onOpenChange={setShowThankYouModal}>
+        <DialogContent className="sm:max-w-md">
+          <DialogHeader className="text-center">
+            {/* Success Icon */}
+            <div className="mx-auto mb-4 flex h-16 w-16 items-center justify-center rounded-full bg-gradient-to-br from-accent/20 to-accent/10 animate-scale-in">
+              <Sparkles className="h-8 w-8 text-accent" />
+            </div>
+            
+            <DialogTitle className="text-2xl font-bold text-center">
+              Спасибо за подписку!
+            </DialogTitle>
+            
+            <DialogDescription className="text-center text-base mt-4 space-y-3">
+              <p>
+                Мы отправили вам письмо для подтверждения подписки. 
+                Пожалуйста, проверьте вашу почту.
+              </p>
+              <div className="flex items-center justify-center gap-2 text-sm text-muted-foreground pt-2">
+                <Mail className="h-4 w-4" />
+                <span>Письмо может попасть в папку "Спам"</span>
+              </div>
+            </DialogDescription>
+          </DialogHeader>
+
+          {/* Action Buttons */}
+          <div className="flex flex-col sm:flex-row gap-3 mt-6">
+            <button
+              onClick={() => setShowThankYouModal(false)}
+              className={cn(
+                "flex-1 px-6 py-3 rounded-lg",
+                "bg-accent text-white font-medium",
+                "hover:bg-accent/90 transition-colors duration-200",
+                "focus:outline-none focus:ring-2 focus:ring-accent focus:ring-offset-2"
+              )}
+            >
+              Отлично!
+            </button>
+          </div>
+
+          {/* Additional Info */}
+          <div className="mt-4 p-3 rounded-lg bg-accent/5 border border-accent/10">
+            <p className="text-xs text-center text-muted-foreground flex items-center justify-center gap-2">
+              <Check className="h-3 w-3 text-green-600" />
+              Вы будете получать только самые интересные статьи
+            </p>
+          </div>
+        </DialogContent>
+      </Dialog>
     </div>
   );
 }

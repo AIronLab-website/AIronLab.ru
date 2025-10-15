@@ -2,25 +2,33 @@ import type { Metadata } from 'next';
 import { BlogHeader } from '@/components/layout/BlogHeader';
 import { LightFooter } from '@/components/layout/LightFooter';
 import { ShareButton } from '@/components/ui/ShareButton';
-import { Calendar, Clock, ArrowLeft, Tag, User, BookOpen } from 'lucide-react';
+import { 
+  PostHero, 
+  TableOfContents, 
+  ReadingProgress, 
+  AuthorSection,
+  InfoCallout 
+} from '@/components/sections/blog';
+import { mockBlogPosts, mockFullBlogPost } from '@/lib/mockBlogData';
 import { notFound } from 'next/navigation';
 
-// Типы для статей
-interface BlogPost {
-  id: string;
-  title: string;
-  excerpt: string;
-  content: string;
-  author: string;
-  date: string;
-  readTime: string;
-  tags: string[];
-  image?: string;
-  slug: string;
+// Mock function to convert preview to full post
+// TODO: Replace with actual CMS/API call
+function getFullPost(slug: string) {
+  // For now, return mockFullBlogPost for any slug
+  // In production, this should fetch from CMS
+  const preview = mockBlogPosts.find(p => p.slug === slug);
+  if (!preview) return null;
+  
+  // Return full blog post with content
+  return {
+    ...mockFullBlogPost,
+    ...preview,
+  };
 }
 
-// Данные статей
-const blogPosts: BlogPost[] = [
+// Old blog posts data (keeping for backward compatibility)
+const oldBlogPosts = [
   {
     id: '6',
     title: '5 ошибок при выборе ИИ-решения, которые стоят бизнесу миллионы',
@@ -415,9 +423,23 @@ interface BlogPostPageProps {
 }
 
 export async function generateMetadata({ params }: BlogPostPageProps): Promise<Metadata> {
-  const post = blogPosts.find(p => p.slug === params.slug);
+  const post = getFullPost(params.slug);
+  
+  if (!post) {
+    return {
+      title: 'Статья не найдена',
+    };
+  }
   
   return {
+    title: post.seo?.metaTitle || post.title,
+    description: post.seo?.metaDescription || post.excerpt,
+    keywords: post.seo?.keywords,
+    openGraph: {
+      title: post.title,
+      description: post.excerpt,
+      images: [post.seo?.ogImage || post.featuredImage?.url || ''],
+    },
     alternates: {
       canonical: `/blog/${params.slug}`,
     },
@@ -425,7 +447,7 @@ export async function generateMetadata({ params }: BlogPostPageProps): Promise<M
 }
 
 export default function BlogPostPage({ params }: BlogPostPageProps) {
-  const post = blogPosts.find(p => p.slug === params.slug);
+  const post = getFullPost(params.slug);
   
   if (!post) {
     notFound();
@@ -433,106 +455,50 @@ export default function BlogPostPage({ params }: BlogPostPageProps) {
 
   return (
     <>
+      {/* Reading Progress Bar */}
+      <ReadingProgress />
+      
       <BlogHeader />
-      <main className="min-h-screen bg-white">
-        {/* Hero секция статьи */}
-        <div className="relative bg-gradient-to-br from-gray-50 to-white py-20">
-          <div className="container-custom">
-            {/* Навигация назад */}
-            <div className="mb-8">
-              <a
-                href="/blog"
-                className="inline-flex items-center space-x-2 text-gray-600 hover:text-accent transition-colors duration-200"
-              >
-                <ArrowLeft className="h-4 w-4" />
-                <span>Вернуться к блогу</span>
-              </a>
-            </div>
+      
+      <main className="min-h-screen bg-gradient-to-br from-gray-50 to-white">
+        {/* Hero Header */}
+        <PostHero post={post} />
 
-            {/* Заголовок и метаданные */}
-            <div className="max-w-4xl mx-auto">
-              {/* Теги */}
-              <div className="flex flex-wrap gap-2 mb-6">
-                {post.tags.map((tag, index) => (
-                  <span
-                    key={index}
-                    className="px-3 py-1 bg-accent/10 text-accent text-sm font-medium rounded-full"
-                  >
-                    {tag}
-                  </span>
-                ))}
-              </div>
-
-              {/* Заголовок */}
-              <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold text-gray-900 mb-8 leading-tight">
-                {post.title}
-              </h1>
-
-              {/* Метаданные */}
-              <div className="flex flex-wrap items-center gap-6 text-gray-600 mb-8">
-                <div className="flex items-center space-x-2">
-                  <User className="h-5 w-5" />
-                  <span className="font-medium">{post.author}</span>
-                </div>
-                <div className="flex items-center space-x-2">
-                  <Calendar className="h-5 w-5" />
-                  <span>{new Date(post.date).toLocaleDateString('ru-RU', { 
-                    year: 'numeric', 
-                    month: 'long', 
-                    day: 'numeric' 
-                  })}</span>
-                </div>
-                <div className="flex items-center space-x-2">
-                  <Clock className="h-5 w-5" />
-                  <span>{post.readTime}</span>
-                </div>
-              </div>
-
-              {/* Краткое описание */}
-              <p className="text-xl text-gray-600 leading-relaxed mb-8">
-                {post.excerpt}
-              </p>
-
-              {/* Кнопка поделиться */}
-              <ShareButton title={post.title} excerpt={post.excerpt} />
-            </div>
-          </div>
-        </div>
-
-        {/* Контент статьи */}
+        {/* Main Content with Sidebar */}
         <div className="py-16">
           <div className="container-custom">
-            <div className="max-w-4xl mx-auto">
+            <div className="grid grid-cols-1 lg:grid-cols-12 gap-12">
+              {/* Table of Contents - Sidebar */}
+              <div className="lg:col-span-3">
+                <TableOfContents content={post.content} />
+              </div>
 
-
-              {/* Текст статьи */}
-              <article className="prose prose-lg max-w-none">
-                <div 
-                  className="text-gray-700 leading-relaxed space-y-6"
-                  dangerouslySetInnerHTML={{ __html: post.content }}
-                />
-              </article>
-
-              {/* Автор */}
-              <div className="mt-16 p-8 bg-gray-50 rounded-2xl">
-                <div className="flex items-center space-x-4">
-                  <div className="w-16 h-16 rounded-full overflow-hidden">
-                    <img 
-                      src="/images/blog/DSCF7133.JPG" 
-                      alt="Александр Гребенщиков" 
-                      className="w-full h-full object-cover"
-                    />
+              {/* Article Content */}
+              <div className="lg:col-span-9">
+                <article className="prose prose-lg max-w-none" id="article-content">
+                  {/* Share Button */}
+                  <div className="mb-8 not-prose">
+                    <ShareButton title={post.title} excerpt={post.excerpt} />
                   </div>
-                  <div>
-                    <h3 className="text-xl font-bold text-gray-900">{post.author}</h3>
-                    <p className="text-gray-600">Эксперт по ИИ и автоматизации бизнес-процессов</p>
-                  </div>
-                </div>
+
+                  {/* Article Content */}
+                  <div 
+                    className="space-y-6"
+                    dangerouslySetInnerHTML={{ __html: post.content }}
+                  />
+                </article>
+
+                {/* Author Section */}
+                <AuthorSection author={post.author} />
+
+                {/* Related Posts would go here */}
+                {/* <RelatedPosts posts={relatedPosts} /> */}
               </div>
             </div>
           </div>
         </div>
       </main>
+      
       <LightFooter />
     </>
   );

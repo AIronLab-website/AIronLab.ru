@@ -7,6 +7,7 @@ import { Calendar, Clock, ArrowRight, Sparkles, Brain, Cpu, Bot, Network } from 
 import { cn } from "@/lib/utils";
 import { Badge } from "@/components/ui/badge";
 import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar";
+import { trackBlogPostClick } from "@/lib/analytics";
 import type { BlogPostPreview, BlogCardVariant } from "@/types/blog";
 
 interface BlogCardProps {
@@ -47,11 +48,17 @@ export function BlogCard({ post, variant = "standard", className }: BlogCardProp
       .slice(0, 2);
   };
 
+  // Track post click for analytics
+  const handlePostClick = () => {
+    trackBlogPostClick(post.title, post.slug);
+  };
+
   // Featured Variant - Large hero card
   if (variant === "featured") {
     return (
       <Link
         href={`/blog/${post.slug}`}
+        onClick={handlePostClick}
         className={cn(
           "group block relative overflow-hidden rounded-2xl",
           "bg-white/50 backdrop-blur-md border border-gray-100",
@@ -176,6 +183,7 @@ export function BlogCard({ post, variant = "standard", className }: BlogCardProp
     return (
       <Link
         href={`/blog/${post.slug}`}
+        onClick={handlePostClick}
         className={cn(
           "group block overflow-hidden rounded-xl",
           "bg-white/70 backdrop-blur-sm border border-gray-100",
@@ -267,6 +275,7 @@ export function BlogCard({ post, variant = "standard", className }: BlogCardProp
   return (
     <Link
       href={`/blog/${post.slug}`}
+      onClick={handlePostClick}
       className={cn(
         "group flex gap-4 p-4 rounded-lg",
         "bg-white/70 backdrop-blur-sm border border-gray-100",
