@@ -1,4 +1,5 @@
 import type { Metadata } from 'next';
+import { Suspense } from 'react';
 import { BlogHeader } from '@/components/layout/BlogHeader';
 import { LightFooter } from '@/components/layout/LightFooter';
 import { Tag } from 'lucide-react';
@@ -33,12 +34,14 @@ export default function BlogPage() {
           </div>
 
           {/* Новые компоненты блога с поиском и фильтрацией */}
-          <BlogSection
-            posts={mockBlogPosts}
-            featuredPost={mockBlogPosts[0]}
-            showSearch={true}
-            showTagFilter={true}
-          />
+          <Suspense fallback={<div className="text-center py-12">Загрузка...</div>}>
+            <BlogSection
+              posts={mockBlogPosts}
+              featuredPost={mockBlogPosts[0]}
+              showSearch={true}
+              showTagFilter={true}
+            />
+          </Suspense>
 
           {/* Кнопка возврата */}
           <div className="text-center mt-12">
