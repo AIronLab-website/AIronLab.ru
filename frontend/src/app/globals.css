@@ -134,18 +134,31 @@
 
   /* Enhanced Blog Typography */
   .prose {
-    @apply text-gray-700 leading-relaxed text-lg;
+    @apply text-gray-700 leading-relaxed text-lg max-w-none;
   }
 
-  /* H2 with accent bar */
+  /* H2 with accent bar and scroll margin */
   .prose h2 {
-    @apply text-3xl md:text-4xl font-bold text-gray-900 mt-12 mb-6 pb-4;
+    @apply text-3xl md:text-4xl font-bold text-gray-900 mt-12 mb-6;
     @apply border-l-4 border-accent pl-6;
+    @apply scroll-mt-24;
     @apply relative;
   }
 
   .prose h3 {
     @apply text-2xl md:text-3xl font-bold text-gray-900 mt-8 mb-4;
+    @apply scroll-mt-24;
+  }
+
+  /* Anchor links for headings */
+  .prose h2:hover .heading-anchor,
+  .prose h3:hover .heading-anchor {
+    @apply opacity-100;
+  }
+
+  .heading-anchor {
+    @apply opacity-0 transition-opacity duration-200;
+    @apply absolute -left-6 text-accent/50 hover:text-accent;
   }
 
   /* Larger paragraphs with better spacing */
@@ -153,7 +166,7 @@
     @apply mb-6 text-gray-700 leading-relaxed text-lg;
   }
 
-  /* Styled lists */
+  /* Styled lists with accent markers */
   .prose ul {
     @apply mb-6 pl-6 space-y-3;
   }
@@ -163,50 +176,62 @@
   }
 
   .prose li {
-    @apply text-gray-700 leading-relaxed text-lg;
-    @apply relative pl-2;
+    @apply text-gray-700 leading-relaxed text-lg pl-2;
+    @apply relative;
   }
 
   .prose ul li::marker {
-    @apply text-accent;
+    @apply text-accent font-bold;
   }
 
   .prose ol li::marker {
     @apply text-accent font-bold;
   }
 
-  /* Enhanced blockquote */
+  /* Enhanced blockquote with rounded corners */
   .prose blockquote {
-    @apply border-l-4 border-accent/30 pl-6 pr-4 py-4 my-8;
-    @apply bg-accent/5 rounded-r-xl;
+    @apply border-l-4 border-accent pl-6 pr-4 py-4 my-8;
+    @apply bg-accent/5 rounded-r-lg;
     @apply italic text-gray-700 text-lg;
   }
 
-  /* Inline code */
+  /* Inline code with accent styling */
   .prose code {
-    @apply bg-accent/10 text-accent px-2 py-1 rounded text-base font-mono;
-    @apply border border-accent/20;
+    @apply bg-gray-100 text-accent px-2 py-1 rounded;
+    @apply text-base font-mono;
   }
 
-  /* Code blocks */
+  /* Code blocks with dark theme */
   .prose pre {
-    @apply bg-gray-900 text-gray-100 p-6 rounded-2xl overflow-x-auto my-8;
-    @apply border border-gray-700 shadow-xl;
+    @apply bg-gray-900 text-gray-100 p-6 rounded-xl overflow-x-auto my-8;
+    @apply shadow-lg;
   }
 
   .prose pre code {
-    @apply bg-transparent border-none p-0 text-sm;
+    @apply bg-transparent p-0 text-sm leading-relaxed;
+    @apply text-gray-100;
   }
 
-  /* Links */
+  /* Links with accent color and decorations */
   .prose a {
-    @apply text-accent hover:text-accent/80 underline underline-offset-4;
-    @apply transition-colors duration-200;
+    @apply text-accent underline decoration-accent/30;
+    @apply hover:decoration-accent transition-colors duration-200;
+    @apply underline-offset-4;
   }
 
-  /* Images */
+  /* Images with rounded corners and shadows */
   .prose img {
     @apply rounded-2xl shadow-lg my-8 mx-auto;
+    @apply max-w-full h-auto;
+  }
+
+  /* Support for image captions */
+  .prose figure {
+    @apply my-8;
+  }
+
+  .prose figcaption {
+    @apply text-center text-sm text-gray-500 mt-3 italic;
   }
 
   /* Horizontal rule */
@@ -223,9 +248,9 @@
     @apply text-gray-600 italic;
   }
 
-  /* Tables */
+  /* Tables with accent headers */
   .prose table {
-    @apply w-full my-8 border-collapse;
+    @apply w-full my-8 border-collapse rounded-xl overflow-hidden;
   }
 
   .prose th {
@@ -233,11 +258,15 @@
   }
 
   .prose td {
-    @apply px-4 py-3 border border-gray-200;
+    @apply px-4 py-3 border border-gray-200 text-gray-700;
   }
 
   .prose tr:nth-child(even) {
     @apply bg-gray-50;
+  }
+
+  .prose tbody tr:hover {
+    @apply bg-gray-100/50 transition-colors duration-150;
   }
 
   /* Анимации */
