@@ -3,7 +3,7 @@
 import React, { useState, useEffect } from "react";
 import { Bookmark, BookmarkCheck } from "lucide-react";
 import { cn } from "@/lib/utils";
-import { Button } from "@/components/ui/button";
+import { Button } from "@/components/ui/Button";
 import { useToast } from "@/hooks/use-toast";
 
 interface BookmarkButtonProps {
