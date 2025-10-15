@@ -4,6 +4,7 @@ import localFont from 'next/font/local'
 import YandexMetrika from '@/components/analytics/YandexMetrika'
 import MetrikaPageView from '@/components/analytics/MetrikaPageView'
 import MetrikaNoscript from '@/components/analytics/MetrikaNoscript'
+import { Toaster } from '@/components/ui/toaster'
 
 const calleo = localFont({
   src: [
@@ -116,6 +117,7 @@ export default function RootLayout({
         <MetrikaNoscript />
         <MetrikaPageView />
         {children}
+        <Toaster />
       </body>
     </html>
   );

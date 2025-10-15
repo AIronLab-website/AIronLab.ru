@@ -16,6 +16,12 @@ export { ReadingProgress } from "./ReadingProgress";
 export { AuthorSection } from "./AuthorSection";
 export { Callout, InfoCallout, WarningCallout, SuccessCallout, TipCallout, DangerCallout } from "./Callout";
 
+// Phase 4: Engagement Features
+export { RelatedPosts } from "./RelatedPosts";
+export { ShareBar } from "./ShareBar";
+export { BookmarkButton } from "./BookmarkButton";
+export { CommentsSection } from "./CommentsSection";
+
 // Re-export types for convenience
 export type {
   BlogPost,

@@ -1,13 +1,18 @@
 import type { Metadata } from 'next';
+import Script from 'next/script';
 import { BlogHeader } from '@/components/layout/BlogHeader';
 import { LightFooter } from '@/components/layout/LightFooter';
 import { ShareButton } from '@/components/ui/ShareButton';
-import { 
-  PostHero, 
-  TableOfContents, 
-  ReadingProgress, 
+import {
+  PostHero,
+  TableOfContents,
+  ReadingProgress,
   AuthorSection,
-  InfoCallout 
+  InfoCallout,
+  ShareBar,
+  BookmarkButton,
+  RelatedPosts,
+  CommentsSection,
 } from '@/components/sections/blog';
 import { mockBlogPosts, mockFullBlogPost } from '@/lib/mockBlogData';
 import { notFound } from 'next/navigation';
@@ -424,42 +429,137 @@ interface BlogPostPageProps {
 
 export async function generateMetadata({ params }: BlogPostPageProps): Promise<Metadata> {
   const post = getFullPost(params.slug);
-  
+
   if (!post) {
     return {
       title: 'Статья не найдена',
     };
   }
-  
+
+  const siteUrl = 'https://aironlab.ru';
+  const postUrl = `${siteUrl}/blog/${params.slug}`;
+  const ogImage = post.seo?.ogImage || post.featuredImage?.url || `${siteUrl}/og-image.jpg`;
+
   return {
     title: post.seo?.metaTitle || post.title,
     description: post.seo?.metaDescription || post.excerpt,
     keywords: post.seo?.keywords,
+    authors: [{ name: post.author.name, url: post.author.socialLinks?.website }],
+    creator: post.author.name,
+    publisher: 'AIronLab',
+
+    // Open Graph
     openGraph: {
-      title: post.title,
-      description: post.excerpt,
-      images: [post.seo?.ogImage || post.featuredImage?.url || ''],
+      type: 'article',
+      url: postUrl,
+      title: post.seo?.metaTitle || post.title,
+      description: post.seo?.metaDescription || post.excerpt,
+      siteName: 'AIronLab',
+      images: [
+        {
+          url: ogImage,
+          width: post.featuredImage?.width || 1200,
+          height: post.featuredImage?.height || 630,
+          alt: post.featuredImage?.alt || post.title,
+        },
+      ],
+      locale: 'ru_RU',
+      publishedTime: post.publishedAt,
+      modifiedTime: post.updatedAt || post.publishedAt,
+      authors: [post.author.name],
+      tags: post.tags.map(tag => tag.name),
     },
+
+    // Twitter Card
+    twitter: {
+      card: 'summary_large_image',
+      site: '@aironlab',
+      creator: post.author.socialLinks?.twitter || '@aironlab',
+      title: post.seo?.metaTitle || post.title,
+      description: post.seo?.metaDescription || post.excerpt,
+      images: [ogImage],
+    },
+
+    // Alternates
     alternates: {
-      canonical: `/blog/${params.slug}`,
+      canonical: postUrl,
+    },
+
+    // Other meta tags
+    category: post.category.name,
+    other: {
+      'article:published_time': post.publishedAt,
+      'article:modified_time': post.updatedAt || post.publishedAt,
+      'article:author': post.author.name,
+      'article:section': post.category.name,
+      'article:tag': post.tags.map(tag => tag.name).join(', '),
     },
   };
 }
 
 export default function BlogPostPage({ params }: BlogPostPageProps) {
   const post = getFullPost(params.slug);
-  
+
   if (!post) {
     notFound();
   }
 
+  // Get current URL for structured data
+  const siteUrl = 'https://aironlab.ru';
+  const postUrl = `${siteUrl}/blog/${params.slug}`;
+  const ogImage = post.seo?.ogImage || post.featuredImage?.url || `${siteUrl}/og-image.jpg`;
+
+  // Structured Data (Schema.org BlogPosting)
+  const structuredData = {
+    '@context': 'https://schema.org',
+    '@type': 'BlogPosting',
+    headline: post.title,
+    description: post.excerpt,
+    image: ogImage,
+    datePublished: post.publishedAt,
+    dateModified: post.updatedAt || post.publishedAt,
+    author: {
+      '@type': 'Person',
+      name: post.author.name,
+      url: post.author.socialLinks?.website,
+      jobTitle: post.author.role,
+    },
+    publisher: {
+      '@type': 'Organization',
+      name: 'AIronLab',
+      url: siteUrl,
+      logo: {
+        '@type': 'ImageObject',
+        url: `${siteUrl}/logo.png`,
+      },
+    },
+    mainEntityOfPage: {
+      '@type': 'WebPage',
+      '@id': postUrl,
+    },
+    keywords: post.tags.map(tag => tag.name).join(', '),
+    articleSection: post.category.name,
+    wordCount: post.content.split(' ').length,
+    inLanguage: 'ru-RU',
+  };
+
   return (
     <>
+      {/* Structured Data */}
+      <Script
+        id="structured-data"
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(structuredData) }}
+      />
+
       {/* Reading Progress Bar */}
       <ReadingProgress />
-      
+
+      {/* Share Bar (Desktop Floating / Mobile Sticky) */}
+      <ShareBar title={post.title} excerpt={post.excerpt} url={postUrl} />
+
       <BlogHeader />
-      
+
       <main className="min-h-screen bg-gradient-to-br from-gray-50 to-white">
         {/* Hero Header */}
         <PostHero post={post} />
@@ -476,13 +576,14 @@ export default function BlogPostPage({ params }: BlogPostPageProps) {
               {/* Article Content */}
               <div className="lg:col-span-9">
                 <article className="prose prose-lg max-w-none" id="article-content">
-                  {/* Share Button */}
-                  <div className="mb-8 not-prose">
+                  {/* Action Buttons */}
+                  <div className="mb-8 not-prose flex flex-wrap gap-4">
                     <ShareButton title={post.title} excerpt={post.excerpt} />
+                    <BookmarkButton postId={post.id} postTitle={post.title} />
                   </div>
 
                   {/* Article Content */}
-                  <div 
+                  <div
                     className="space-y-6"
                     dangerouslySetInnerHTML={{ __html: post.content }}
                   />
@@ -490,15 +591,26 @@ export default function BlogPostPage({ params }: BlogPostPageProps) {
 
                 {/* Author Section */}
                 <AuthorSection author={post.author} />
-
-                {/* Related Posts would go here */}
-                {/* <RelatedPosts posts={relatedPosts} /> */}
               </div>
             </div>
           </div>
         </div>
+
+        {/* Related Posts Section */}
+        <RelatedPosts
+          currentPost={post}
+          allPosts={mockBlogPosts}
+          maxPosts={3}
+        />
+
+        {/* Comments Section */}
+        <CommentsSection
+          postId={post.id}
+          postAuthorId={post.author.id}
+          allowComments={post.allowComments}
+        />
       </main>
-      
+
       <LightFooter />
     </>
   );
