@@ -12,12 +12,16 @@ export const mockAuthors: BlogAuthor[] = [
     name: "Александр Иванов",
     email: "alexander@aironlab.ru",
     avatar: "/images/authors/alexander.jpg",
-    bio: "CTO AIronLab, эксперт в области машинного обучения и AI",
+    bio: "CTO AIronLab, эксперт в области машинного обучения и AI. Специализируюсь на внедрении AI-решений для бизнеса, разработке RAG-систем и автоматизации с помощью LLM.",
     role: "CTO",
     socialLinks: {
       twitter: "https://twitter.com/aironlab",
       linkedin: "https://linkedin.com/in/aironlab",
       github: "https://github.com/aironlab",
+    },
+    stats: {
+      articles: 42,
+      experience: 8,
     },
   },
   {
@@ -25,16 +29,33 @@ export const mockAuthors: BlogAuthor[] = [
     name: "Мария Петрова",
     email: "maria@aironlab.ru",
     avatar: "/images/authors/maria.jpg",
-    bio: "Lead AI Developer, специалист по NLP и компьютерному зрению",
+    bio: "Lead AI Developer, специалист по NLP и компьютерному зрению. Разрабатываю модели для обработки естественного языка и систем распознавания изображений.",
     role: "Lead AI Developer",
+    socialLinks: {
+      linkedin: "https://linkedin.com/in/maria-petrova",
+      github: "https://github.com/maria-petrova",
+    },
+    stats: {
+      articles: 28,
+      experience: 6,
+    },
   },
   {
     id: "3",
     name: "Дмитрий Сидоров",
     email: "dmitry@aironlab.ru",
     avatar: "/images/authors/dmitry.jpg",
-    bio: "Senior Backend Developer, архитектор AI-систем",
+    bio: "Senior Backend Developer, архитектор AI-систем. Проектирую масштабируемую инфраструктуру для ML-моделей и создаю API для интеграции AI в бизнес-процессы.",
     role: "Senior Backend Developer",
+    socialLinks: {
+      linkedin: "https://linkedin.com/in/dmitry-sidorov",
+      github: "https://github.com/dmitry-sidorov",
+      twitter: "https://twitter.com/dmitry_dev",
+    },
+    stats: {
+      articles: 35,
+      experience: 10,
+    },
   },
 ];
 

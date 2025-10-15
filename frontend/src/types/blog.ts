@@ -20,6 +20,10 @@ export interface BlogAuthor {
     github?: string;
     website?: string;
   };
+  stats?: {
+    articles: number;
+    experience: number;
+  };
 }
 
 /**
