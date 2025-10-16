@@ -1,5 +1,6 @@
 import type { Metadata } from 'next';
 import Script from 'next/script';
+import dynamic from 'next/dynamic';
 import { BlogHeader } from '@/components/layout/BlogHeader';
 import { LightFooter } from '@/components/layout/LightFooter';
 import { ShareButton } from '@/components/ui/ShareButton';
@@ -9,11 +10,21 @@ import {
   ReadingProgress,
   AuthorSection,
   InfoCallout,
-  ShareBar,
-  RelatedPosts,
 } from '@/components/sections/blog';
+import { BlogAnalytics } from '@/components/analytics/BlogAnalytics';
 import { mockBlogPosts, mockFullBlogPost } from '@/lib/mockBlogData';
 import { notFound } from 'next/navigation';
+
+// Lazy load below-the-fold components
+const ShareBar = dynamic(
+  () => import('@/components/sections/blog').then((mod) => ({ default: mod.ShareBar })),
+  { ssr: false }
+);
+
+const RelatedPosts = dynamic(
+  () => import('@/components/sections/blog').then((mod) => ({ default: mod.RelatedPosts })),
+  { ssr: false }
+);
 
 // Mock function to convert preview to full post
 // TODO: Replace with actual CMS/API call
@@ -549,6 +560,9 @@ export default function BlogPostPage({ params }: BlogPostPageProps) {
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(structuredData) }}
       />
+
+      {/* Analytics Tracking */}
+      <BlogAnalytics postTitle={post.title} postSlug={params.slug} />
 
       {/* Reading Progress Bar */}
       <ReadingProgress />

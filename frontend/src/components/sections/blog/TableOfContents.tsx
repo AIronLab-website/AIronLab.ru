@@ -3,6 +3,7 @@
 import { useState, useEffect, useRef } from 'react';
 import { BookOpen, ChevronDown, ChevronUp, List } from 'lucide-react';
 import { cn } from '@/lib/utils';
+import { trackToCClick } from '@/lib/analytics';
 
 interface TOCItem {
   id: string;
@@ -133,7 +134,10 @@ export function TableOfContents({ content, className }: TableOfContentsProps) {
   }, []);
 
   // Smooth scroll to section
-  const scrollToSection = (id: string) => {
+  const scrollToSection = (id: string, sectionText: string) => {
+    // Track ToC click
+    trackToCClick(sectionText);
+
     const element = document.getElementById(id);
     if (element) {
       const offset = 100; // Offset for fixed header
@@ -180,7 +184,7 @@ export function TableOfContents({ content, className }: TableOfContentsProps) {
               {toc.map((item, index) => (
                 <li key={item.id}>
                   <button
-                    onClick={() => scrollToSection(item.id)}
+                    onClick={() => scrollToSection(item.id, item.text)}
                     className={cn(
                       "w-full text-left text-sm py-2 px-3 rounded-lg",
                       "transition-all duration-200",
@@ -279,7 +283,7 @@ export function TableOfContents({ content, className }: TableOfContentsProps) {
                 {toc.map((item) => (
                   <li key={item.id}>
                     <button
-                      onClick={() => scrollToSection(item.id)}
+                      onClick={() => scrollToSection(item.id, item.text)}
                       className={cn(
                         "w-full text-left text-sm py-2 px-3 rounded-lg",
                         "transition-all duration-200",

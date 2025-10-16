@@ -14,6 +14,7 @@ import {
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/Button";
 import { useToast } from "@/hooks/use-toast";
+import { trackShareClick } from "@/lib/analytics";
 
 interface ShareBarProps {
   title: string;
@@ -48,46 +49,59 @@ export function ShareBar({
   useEffect(() => {
     setCurrentUrl(url || window.location.href);
 
-    // Show share bar after scrolling down a bit
+    // Show share bar after scrolling down a bit with debounce
+    let timeout: NodeJS.Timeout;
     const handleScroll = () => {
-      setIsVisible(window.scrollY > 300);
+      clearTimeout(timeout);
+      timeout = setTimeout(() => {
+        setIsVisible(window.scrollY > 300);
+      }, 100);
     };
 
-    window.addEventListener("scroll", handleScroll);
-    return () => window.removeEventListener("scroll", handleScroll);
+    window.addEventListener("scroll", handleScroll, { passive: true });
+    return () => {
+      window.removeEventListener("scroll", handleScroll);
+      clearTimeout(timeout);
+    };
   }, [url]);
 
-  // Share handlers
-  const shareOnTwitter = () => {
+  // Share handlers - memoized to prevent re-creation on every render
+  const shareOnTwitter = React.useCallback(() => {
+    trackShareClick('twitter', title);
     const text = `${title}\n\n${excerpt}`;
     const twitterUrl = `https://twitter.com/intent/tweet?text=${encodeURIComponent(text)}&url=${encodeURIComponent(currentUrl)}`;
     window.open(twitterUrl, "_blank", "noopener,noreferrer");
-  };
+  }, [title, excerpt, currentUrl]);
 
-  const shareOnLinkedIn = () => {
+  const shareOnLinkedIn = React.useCallback(() => {
+    trackShareClick('linkedin', title);
     const linkedInUrl = `https://www.linkedin.com/sharing/share-offsite/?url=${encodeURIComponent(currentUrl)}`;
     window.open(linkedInUrl, "_blank", "noopener,noreferrer");
-  };
+  }, [title, currentUrl]);
 
-  const shareOnFacebook = () => {
+  const shareOnFacebook = React.useCallback(() => {
+    trackShareClick('facebook', title);
     const facebookUrl = `https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(currentUrl)}`;
     window.open(facebookUrl, "_blank", "noopener,noreferrer");
-  };
+  }, [title, currentUrl]);
 
-  const shareOnTelegram = () => {
+  const shareOnTelegram = React.useCallback(() => {
+    trackShareClick('telegram', title);
     const text = `${title}\n\n${excerpt}`;
     const telegramUrl = `https://t.me/share/url?url=${encodeURIComponent(currentUrl)}&text=${encodeURIComponent(text)}`;
     window.open(telegramUrl, "_blank", "noopener,noreferrer");
-  };
+  }, [title, excerpt, currentUrl]);
 
-  const shareViaEmail = () => {
+  const shareViaEmail = React.useCallback(() => {
+    trackShareClick('email', title);
     const subject = encodeURIComponent(title);
     const body = encodeURIComponent(`${excerpt}\n\nЧитать далее: ${currentUrl}`);
     window.location.href = `mailto:?subject=${subject}&body=${body}`;
-  };
+  }, [title, excerpt, currentUrl]);
 
-  const copyLink = async () => {
+  const copyLink = React.useCallback(async () => {
     try {
+      trackShareClick('copy_link', title);
       await navigator.clipboard.writeText(currentUrl);
       setCopied(true);
       toast({
@@ -103,12 +117,13 @@ export function ShareBar({
         variant: "destructive",
       });
     }
-  };
+  }, [title, currentUrl, toast]);
 
   // Native Web Share API (mobile)
-  const nativeShare = async () => {
+  const nativeShare = React.useCallback(async () => {
     if (navigator.share) {
       try {
+        trackShareClick('native_share', title);
         await navigator.share({
           title,
           text: excerpt,
@@ -119,53 +134,56 @@ export function ShareBar({
         console.log("Share cancelled or failed");
       }
     }
-  };
+  }, [title, excerpt, currentUrl]);
 
-  // Share buttons configuration
-  const shareButtons = [
-    {
-      name: "Twitter",
-      icon: Twitter,
-      onClick: shareOnTwitter,
-      color: "hover:bg-[#1DA1F2] hover:text-white",
-      ariaLabel: "Поделиться в Twitter",
-    },
-    {
-      name: "LinkedIn",
-      icon: Linkedin,
-      onClick: shareOnLinkedIn,
-      color: "hover:bg-[#0077B5] hover:text-white",
-      ariaLabel: "Поделиться в LinkedIn",
-    },
-    {
-      name: "Facebook",
-      icon: Facebook,
-      onClick: shareOnFacebook,
-      color: "hover:bg-[#1877F2] hover:text-white",
-      ariaLabel: "Поделиться в Facebook",
-    },
-    {
-      name: "Telegram",
-      icon: Send,
-      onClick: shareOnTelegram,
-      color: "hover:bg-[#0088CC] hover:text-white",
-      ariaLabel: "Поделиться в Telegram",
-    },
-    {
-      name: "Email",
-      icon: Mail,
-      onClick: shareViaEmail,
-      color: "hover:bg-gray-600 hover:text-white",
-      ariaLabel: "Поделиться по email",
-    },
-    {
-      name: "Copy",
-      icon: copied ? Check : Link2,
-      onClick: copyLink,
-      color: copied ? "bg-green-500 text-white" : "hover:bg-accent hover:text-white",
-      ariaLabel: "Скопировать ссылку",
-    },
-  ];
+  // Share buttons configuration - memoized to prevent re-creation
+  const shareButtons = React.useMemo(
+    () => [
+      {
+        name: "Twitter",
+        icon: Twitter,
+        onClick: shareOnTwitter,
+        color: "hover:bg-[#1DA1F2] hover:text-white",
+        ariaLabel: "Поделиться в Twitter",
+      },
+      {
+        name: "LinkedIn",
+        icon: Linkedin,
+        onClick: shareOnLinkedIn,
+        color: "hover:bg-[#0077B5] hover:text-white",
+        ariaLabel: "Поделиться в LinkedIn",
+      },
+      {
+        name: "Facebook",
+        icon: Facebook,
+        onClick: shareOnFacebook,
+        color: "hover:bg-[#1877F2] hover:text-white",
+        ariaLabel: "Поделиться в Facebook",
+      },
+      {
+        name: "Telegram",
+        icon: Send,
+        onClick: shareOnTelegram,
+        color: "hover:bg-[#0088CC] hover:text-white",
+        ariaLabel: "Поделиться в Telegram",
+      },
+      {
+        name: "Email",
+        icon: Mail,
+        onClick: shareViaEmail,
+        color: "hover:bg-gray-600 hover:text-white",
+        ariaLabel: "Поделиться по email",
+      },
+      {
+        name: "Copy",
+        icon: copied ? Check : Link2,
+        onClick: copyLink,
+        color: copied ? "bg-green-500 text-white" : "hover:bg-accent hover:text-white",
+        ariaLabel: "Скопировать ссылку",
+      },
+    ],
+    [copied, shareOnTwitter, shareOnLinkedIn, shareOnFacebook, shareOnTelegram, shareViaEmail, copyLink]
+  );
 
   return (
     <>

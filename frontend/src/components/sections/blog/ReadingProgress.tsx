@@ -27,13 +27,32 @@ export function ReadingProgress({ className }: ReadingProgressProps) {
   }, []);
 
   useEffect(() => {
-    // Update on scroll with passive listener for better performance
-    window.addEventListener('scroll', updateProgress, { passive: true });
+    // Throttle scroll updates for better performance
+    let rafId: number | null = null;
+    let timeout: NodeJS.Timeout;
+
+    const throttledUpdate = () => {
+      if (rafId === null) {
+        rafId = requestAnimationFrame(() => {
+          updateProgress();
+          rafId = null;
+        });
+      }
+    };
+
+    // Update on scroll with passive listener and throttling
+    window.addEventListener('scroll', throttledUpdate, { passive: true });
 
     // Initial update
     updateProgress();
 
-    return () => window.removeEventListener('scroll', updateProgress);
+    return () => {
+      window.removeEventListener('scroll', throttledUpdate);
+      if (rafId !== null) {
+        cancelAnimationFrame(rafId);
+      }
+      clearTimeout(timeout);
+    };
   }, [updateProgress]);
 
   return (

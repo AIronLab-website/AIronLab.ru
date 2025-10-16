@@ -5,6 +5,7 @@ import { Calendar, Clock, Sparkles, Brain, Cpu, Bot, Network } from 'lucide-reac
 import { formatRelativeDate } from '@/lib/blogUtils';
 import { trackBlogPostClick } from '@/lib/analytics';
 import Link from 'next/link';
+import Image from 'next/image';
 
 interface FeaturedPostProps {
   post: BlogPostPreview;
@@ -20,12 +21,16 @@ export function FeaturedPost({ post }: FeaturedPostProps) {
       {/* Hero Container */}
       <div className="relative h-[450px] md:h-[500px] rounded-3xl overflow-hidden group">
         {/* Background Image with Gradient Overlay */}
-        <div 
-          className="absolute inset-0 bg-cover bg-center transition-transform duration-700 group-hover:scale-105"
-          style={{
-            backgroundImage: `url(${post.featuredImage?.url || '/images/blog/default.jpg'})`,
-          }}
-        >
+        <div className="absolute inset-0">
+          <Image
+            src={post.featuredImage?.url || '/images/blog/default.jpg'}
+            alt={post.featuredImage?.alt || post.title}
+            fill
+            priority
+            className="object-cover transition-transform duration-700 group-hover:scale-105"
+            sizes="100vw"
+            quality={90}
+          />
           {/* Dark Gradient Overlay */}
           <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/50 to-black/20" />
         </div>
@@ -93,11 +98,15 @@ export function FeaturedPost({ post }: FeaturedPostProps) {
               {/* Author */}
               <div className="flex items-center space-x-2">
                 {post.author.avatar && (
-                  <img
-                    src={post.author.avatar}
-                    alt={post.author.name}
-                    className="w-8 h-8 rounded-full border-2 border-white shadow-sm"
-                  />
+                  <div className="relative w-8 h-8 rounded-full border-2 border-white shadow-sm overflow-hidden">
+                    <Image
+                      src={post.author.avatar}
+                      alt={post.author.name}
+                      fill
+                      className="object-cover"
+                      sizes="32px"
+                    />
+                  </div>
                 )}
                 <span className="text-sm font-medium text-gray-800">{post.author.name}</span>
               </div>

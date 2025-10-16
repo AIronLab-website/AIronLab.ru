@@ -14,6 +14,7 @@ interface BlogCardProps {
   post: BlogPostPreview;
   variant?: BlogCardVariant;
   className?: string;
+  onClick?: () => void;
 }
 
 /**
@@ -29,7 +30,7 @@ interface BlogCardProps {
  * - Next.js Image optimization
  * - Accessible with keyboard navigation
  */
-export function BlogCard({ post, variant = "standard", className }: BlogCardProps) {
+export function BlogCard({ post, variant = "standard", className, onClick }: BlogCardProps) {
   const formatDate = (dateString: string) => {
     const date = new Date(dateString);
     return new Intl.DateTimeFormat("ru-RU", {
@@ -51,6 +52,7 @@ export function BlogCard({ post, variant = "standard", className }: BlogCardProp
   // Track post click for analytics
   const handlePostClick = () => {
     trackBlogPostClick(post.title, post.slug);
+    onClick?.(); // Call additional onClick if provided
   };
 
   // Featured Variant - Large hero card

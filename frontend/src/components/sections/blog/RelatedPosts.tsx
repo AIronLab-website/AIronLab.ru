@@ -4,6 +4,7 @@ import React from "react";
 import Link from "next/link";
 import { ArrowRight } from "lucide-react";
 import { BlogCard } from "../BlogCard";
+import { trackRelatedPostClick } from "@/lib/analytics";
 import type { BlogPost, BlogPostPreview } from "@/types/blog";
 
 interface RelatedPostsProps {
@@ -34,8 +35,8 @@ export function RelatedPosts({
   maxPosts = 3,
   className = "",
 }: RelatedPostsProps) {
-  // Calculate relevance score for each post
-  const getRelevanceScore = (post: BlogPostPreview): number => {
+  // Calculate relevance score for each post - memoized
+  const getRelevanceScore = React.useCallback((post: BlogPostPreview): number => {
     let score = 0;
 
     // Exclude current post
@@ -60,18 +61,22 @@ export function RelatedPosts({
     }
 
     return score;
-  };
+  }, [currentPost.id, currentPost.tags, currentPost.category.slug]);
 
-  // Sort posts by relevance and take top N
-  const relatedPosts = allPosts
-    .map((post) => ({
-      post,
-      score: getRelevanceScore(post),
-    }))
-    .filter(({ score }) => score > 0) // Exclude current post and irrelevant posts
-    .sort((a, b) => b.score - a.score)
-    .slice(0, maxPosts)
-    .map(({ post }) => post);
+  // Sort posts by relevance and take top N - memoized
+  const relatedPosts = React.useMemo(
+    () =>
+      allPosts
+        .map((post) => ({
+          post,
+          score: getRelevanceScore(post),
+        }))
+        .filter(({ score }) => score > 0) // Exclude current post and irrelevant posts
+        .sort((a, b) => b.score - a.score)
+        .slice(0, maxPosts)
+        .map(({ post }) => post),
+    [allPosts, getRelevanceScore, maxPosts]
+  );
 
   // Don't render if no related posts
   if (relatedPosts.length === 0) {
@@ -115,7 +120,12 @@ export function RelatedPosts({
         {/* Related Posts Grid */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8">
           {relatedPosts.map((post) => (
-            <BlogCard key={post.id} post={post} variant="compact" />
+            <BlogCard
+              key={post.id}
+              post={post}
+              variant="compact"
+              onClick={() => trackRelatedPostClick(post.title, currentPost.slug)}
+            />
           ))}
         </div>
 

@@ -4,7 +4,19 @@
  */
 
 export interface BlogAnalyticsEvent {
-  event: 'blog_search' | 'blog_filter_tag' | 'blog_filter_clear' | 'blog_post_click' | 'newsletter_subscribe' | 'newsletter_error';
+  event:
+    | 'blog_search'
+    | 'blog_filter_tag'
+    | 'blog_filter_clear'
+    | 'blog_post_click'
+    | 'blog_post_view'
+    | 'blog_scroll_depth'
+    | 'blog_time_on_page'
+    | 'blog_share_click'
+    | 'blog_toc_click'
+    | 'blog_related_post_click'
+    | 'newsletter_subscribe'
+    | 'newsletter_error';
   properties?: {
     query?: string;
     tag?: string;
@@ -14,6 +26,11 @@ export interface BlogAnalyticsEvent {
     email?: string;
     source?: string;
     error?: string;
+    scrollDepth?: number;
+    timeOnPage?: number;
+    sharePlatform?: string;
+    tocSection?: string;
+    relatedPostTitle?: string;
   };
 }
 
@@ -104,6 +121,66 @@ export function trackNewsletterError(error: string) {
   trackBlogEvent({
     event: 'newsletter_error',
     properties: { error },
+  });
+}
+
+/**
+ * Track blog post view
+ */
+export function trackBlogPostView(postTitle: string, postSlug: string) {
+  trackBlogEvent({
+    event: 'blog_post_view',
+    properties: { postTitle, postSlug },
+  });
+}
+
+/**
+ * Track scroll depth (25%, 50%, 75%, 100%)
+ */
+export function trackScrollDepth(scrollDepth: number, postSlug?: string) {
+  trackBlogEvent({
+    event: 'blog_scroll_depth',
+    properties: { scrollDepth, postSlug },
+  });
+}
+
+/**
+ * Track time spent on page
+ */
+export function trackTimeOnPage(timeOnPage: number, postSlug?: string) {
+  trackBlogEvent({
+    event: 'blog_time_on_page',
+    properties: { timeOnPage, postSlug },
+  });
+}
+
+/**
+ * Track share button click
+ */
+export function trackShareClick(sharePlatform: string, postTitle?: string) {
+  trackBlogEvent({
+    event: 'blog_share_click',
+    properties: { sharePlatform, postTitle },
+  });
+}
+
+/**
+ * Track table of contents click
+ */
+export function trackToCClick(tocSection: string, postSlug?: string) {
+  trackBlogEvent({
+    event: 'blog_toc_click',
+    properties: { tocSection, postSlug },
+  });
+}
+
+/**
+ * Track related post click
+ */
+export function trackRelatedPostClick(relatedPostTitle: string, currentPostSlug?: string) {
+  trackBlogEvent({
+    event: 'blog_related_post_click',
+    properties: { relatedPostTitle, postSlug: currentPostSlug },
   });
 }
 
