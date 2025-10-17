@@ -97,10 +97,10 @@ export function PostHero({ post, className }: PostHeroProps) {
                   key={tag.slug}
                   href={`/blog/tag/${tag.slug}`}
                   className={cn(
-                    "px-3 py-1.5 md:px-4 md:py-2",
+                    "px-4 py-2.5 md:px-5 md:py-3 min-h-[44px] flex items-center",
                     "bg-white/20 backdrop-blur-md",
                     "hover:bg-white/30 hover:scale-105",
-                    "text-white text-xs md:text-sm font-medium",
+                    "text-white text-sm md:text-base font-medium",
                     "rounded-full transition-all duration-200",
                     "border border-white/30",
                     "focus:outline-none focus:ring-2 focus:ring-white/50"

@@ -186,7 +186,7 @@ export function TableOfContents({ content, className }: TableOfContentsProps) {
                   <button
                     onClick={() => scrollToSection(item.id, item.text)}
                     className={cn(
-                      "w-full text-left text-sm py-2 px-3 rounded-lg",
+                      "w-full text-left text-sm py-3 px-3 rounded-lg min-h-[44px] flex items-center",
                       "transition-all duration-200",
                       "focus:outline-none focus:ring-2 focus:ring-accent focus:ring-offset-2",
                       item.level === 3 && "pl-6 text-xs",
@@ -285,7 +285,7 @@ export function TableOfContents({ content, className }: TableOfContentsProps) {
                     <button
                       onClick={() => scrollToSection(item.id, item.text)}
                       className={cn(
-                        "w-full text-left text-sm py-2 px-3 rounded-lg",
+                        "w-full text-left text-sm py-3 px-3 rounded-lg min-h-[44px] flex items-center",
                         "transition-all duration-200",
                         "focus:outline-none focus:ring-2 focus:ring-accent focus:ring-offset-2",
                         item.level === 3 && "pl-6 text-xs",

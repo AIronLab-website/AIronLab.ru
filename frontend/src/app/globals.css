@@ -518,4 +518,42 @@
   [data-clickable="true"] * {
     pointer-events: auto !important;
   }
+
+  /* WCAG 2.1 AAA Touch Target Utilities (2.5.5) */
+  /* Minimum 44x44px touch targets for mobile accessibility */
+  .touch-target {
+    @apply min-h-[44px] min-w-[44px];
+  }
+
+  /* Responsive touch targets: 44px mobile, 36px desktop */
+  .touch-target-responsive {
+    @apply min-h-[44px] min-w-[44px];
+
+    @screen md {
+      @apply min-h-[36px] min-w-[36px];
+    }
+  }
+
+  /* Icon button specific: ensures proper padding */
+  .touch-target-icon {
+    @apply min-h-[44px] min-w-[44px] flex items-center justify-center;
+
+    @screen md {
+      @apply min-h-[40px] min-w-[40px];
+    }
+  }
+
+  /* Group of touch targets with proper spacing (min 8px) */
+  .touch-targets-group {
+    @apply flex gap-2; /* 8px minimum spacing */
+  }
+
+  /* Mobile-friendly button sizes */
+  .mobile-friendly-button {
+    @apply min-h-[48px] min-w-[48px] text-base md:text-lg px-6 py-3 md:px-8 md:py-4;
+  }
+
+  .mobile-friendly-touch {
+    @apply min-h-[44px] p-3 md:p-4;
+  }
 } 

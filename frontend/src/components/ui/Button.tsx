@@ -16,10 +16,10 @@ const buttonVariants = cva(
         accent: "bg-accent text-accent-foreground shadow hover:bg-accent/90 hover:shadow-lg transform hover:scale-105",
       },
       size: {
-        default: "h-12 px-6 py-3",
-        sm: "h-9 px-4 py-2 text-xs",
-        lg: "h-14 px-8 py-4 text-base",
-        icon: "h-12 w-12",
+        default: "h-12 px-6 py-3", // 48px - exceeds 44px minimum ✅
+        sm: "h-11 px-4 py-2 text-xs", // 44px minimum for touch ✅
+        lg: "h-14 px-8 py-4 text-base", // 56px - exceeds minimum ✅
+        icon: "h-11 w-11 min-h-[44px] min-w-[44px]", // 44px minimum, responsive
       },
     },
     defaultVariants: {
