@@ -10,11 +10,11 @@
     --primary-foreground: #FFFFFF;
     --secondary: #F5F5F5;
     --secondary-foreground: #000000;
-    --accent: #6366F1;
+    --accent: #4F46E5; /* Darker indigo for WCAG AA compliance */
     --accent-foreground: #FFFFFF;
     --muted: #F8FAFC;
-    --muted-foreground: #64748B;
-    --border: rgba(255, 255, 255, 0.3);
+    --muted-foreground: #475569; /* Darker slate for WCAG AA compliance */
+    --border: rgba(0, 0, 0, 0.15); /* Dark border for better visibility */
     --card: #FFFFFF;
     --card-foreground: #000000;
   }
@@ -134,7 +134,7 @@
 
   /* Enhanced Blog Typography */
   .prose {
-    @apply text-gray-700 leading-relaxed text-lg max-w-none;
+    @apply text-gray-800 leading-relaxed text-lg max-w-none; /* Darker for better contrast */
   }
 
   /* H2 with accent bar and scroll margin */
@@ -163,7 +163,7 @@
 
   /* Larger paragraphs with better spacing */
   .prose p {
-    @apply mb-6 text-gray-700 leading-relaxed text-lg;
+    @apply mb-6 text-gray-800 leading-relaxed text-lg; /* Darker for better contrast */
   }
 
   /* Styled lists with accent markers */
@@ -176,7 +176,7 @@
   }
 
   .prose li {
-    @apply text-gray-700 leading-relaxed text-lg pl-2;
+    @apply text-gray-800 leading-relaxed text-lg pl-2; /* Darker for better contrast */
     @apply relative;
   }
 
@@ -192,7 +192,7 @@
   .prose blockquote {
     @apply border-l-4 border-accent pl-6 pr-4 py-4 my-8;
     @apply bg-accent/5 rounded-r-lg;
-    @apply italic text-gray-700 text-lg;
+    @apply italic text-gray-800 text-lg; /* Darker for better contrast */
   }
 
   /* Inline code with accent styling */
@@ -258,7 +258,7 @@
   }
 
   .prose td {
-    @apply px-4 py-3 border border-gray-200 text-gray-700;
+    @apply px-4 py-3 border border-gray-200 text-gray-800; /* Darker for better contrast */
   }
 
   .prose tr:nth-child(even) {

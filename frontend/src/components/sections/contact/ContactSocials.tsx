@@ -86,7 +86,7 @@ export const ContactSocials: React.FC = () => {
           <div className="flex items-center space-x-3">
             <div className="w-10 h-10 bg-gradient-to-r from-orange-500 to-red-500 rounded-lg flex items-center justify-center group-hover:scale-110 transition-transform duration-300">
               <div className="w-5 h-5 bg-white rounded-sm flex items-center justify-center">
-                <span className="text-orange-500 text-xs font-bold">VC</span>
+                <span className="text-orange-700 text-xs font-bold">VC</span>
               </div>
             </div>
             <div>

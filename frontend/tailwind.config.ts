@@ -20,14 +20,14 @@ const config: Config = {
           foreground: "#000000",
         },
         accent: {
-          DEFAULT: "#6366F1",
+          DEFAULT: "#4F46E5", // Darker indigo for better contrast (was #6366F1)
           foreground: "#FFFFFF",
         },
         muted: {
           DEFAULT: "#F8FAFC",
-          foreground: "#64748B",
+          foreground: "#475569", // Darker slate for WCAG AA compliance (was #64748B)
         },
-        border: "rgba(255, 255, 255, 0.3)",
+        border: "rgba(0, 0, 0, 0.15)", // Changed to dark border for better visibility
         card: {
           DEFAULT: "#FFFFFF",
           foreground: "#000000",
