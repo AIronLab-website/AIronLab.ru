@@ -90,7 +90,11 @@ export function BlogSection({
   };
 
   return (
-    <section className={cn("spacing-responsive container-custom", className)}>
+    <section
+      role="main"
+      aria-label="Blog posts section"
+      className={cn("spacing-responsive container-custom", className)}
+    >
       {/* Section Header */}
       <div className="text-center mb-12 md:mb-16">
         <h1 className="text-responsive-h1 mb-4 animate-slide-up">{title}</h1>
@@ -133,7 +137,12 @@ export function BlogSection({
 
       {/* Results Summary with Active Filters Badge */}
       {hasActiveFilters && (
-        <div className="mb-8 p-4 rounded-lg glass-effect border border-white/20 animate-slide-down">
+        <div
+          role="status"
+          aria-live="polite"
+          aria-atomic="true"
+          className="mb-8 p-4 rounded-lg glass-effect border border-white/20 animate-slide-down"
+        >
           <div className="flex items-center justify-between gap-4 flex-wrap">
             <div className="flex items-center gap-3">
               <p className="text-sm text-muted-foreground">
@@ -164,6 +173,7 @@ export function BlogSection({
                 "transition-colors duration-200",
                 "focus:outline-none focus:ring-2 focus:ring-accent focus:ring-offset-2"
               )}
+              aria-label="Clear all active filters"
             >
               Сбросить все фильтры
             </button>
@@ -173,10 +183,15 @@ export function BlogSection({
 
       {/* Blog Posts Grid */}
       {filteredPosts.length > 0 ? (
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8 animate-fade-in">
+        <div
+          role="list"
+          aria-label="Blog posts"
+          className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8 animate-fade-in"
+        >
           {filteredPosts.map((post, index) => (
             <div
               key={post.id}
+              role="listitem"
               className="animate-slide-up"
               style={{ animationDelay: `${index * 0.1}s` }}
             >
@@ -186,10 +201,12 @@ export function BlogSection({
         </div>
       ) : (
         /* Empty State */
-        <EmptyState
-          type={hasActiveFilters ? "no-results" : "no-posts"}
-          onReset={hasActiveFilters ? handleClearAllFilters : undefined}
-        />
+        <div role="status" aria-live="polite">
+          <EmptyState
+            type={hasActiveFilters ? "no-results" : "no-posts"}
+            onReset={hasActiveFilters ? handleClearAllFilters : undefined}
+          />
+        </div>
       )}
 
       {/* Newsletter CTA */}

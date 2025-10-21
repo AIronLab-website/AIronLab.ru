@@ -1,4 +1,4 @@
-# 🚀 AIronLab - Frontend
+# 🚀 AIronLab
 
 ## 📝 О проекте
 

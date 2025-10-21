@@ -87,18 +87,24 @@ export const Header: React.FC = () => {
 
   return (
     <header
+      role="banner"
+      aria-label="Site header"
       className={cn(
         "fixed top-0 left-0 right-0 z-50 transition-all duration-300",
         "animate-slide-down",
-        isScrolled 
-          ? "glass-effect border-b border-white/30" 
+        isScrolled
+          ? "glass-effect border-b border-white/30"
           : "bg-transparent"
       )}
     >
       {/* Граница снизу как в макете */}
-      <div className="absolute bottom-0 left-0 right-0 h-[2px] bg-gradient-to-r from-transparent via-white/30 to-transparent" />
-      
-      <nav className="container-custom py-4">
+      <div className="absolute bottom-0 left-0 right-0 h-[2px] bg-gradient-to-r from-transparent via-white/30 to-transparent" aria-hidden="true" />
+
+      <nav
+        role="navigation"
+        aria-label="Main navigation"
+        className="container-custom py-4"
+      >
         <div className="flex items-center justify-between h-12">
           {/* Логотип */}
           <div className="flex items-center">
@@ -137,6 +143,8 @@ export const Header: React.FC = () => {
                   key={item.id}
                   onClick={() => handleNavClick(item.id, item.isExternal, item.href)}
                   data-clickable="true"
+                  aria-label={`Navigate to ${item.name} section`}
+                  aria-current={activeSection === item.id && !item.isExternal ? "page" : undefined}
                   className={cn(
                     "px-4 py-2 rounded-lg text-sm font-medium transition-all duration-200 relative",
                     "hover:scale-105 active:scale-95",
@@ -149,7 +157,7 @@ export const Header: React.FC = () => {
                 >
                   {item.name}
                   {activeSection === item.id && !item.isExternal && (
-                    <div className="absolute inset-0 bg-accent/5 rounded-lg -z-10 animate-scale-in" />
+                    <div className="absolute inset-0 bg-accent/5 rounded-lg -z-10 animate-scale-in" aria-hidden="true" />
                   )}
                 </button>
               );
@@ -163,10 +171,11 @@ export const Header: React.FC = () => {
               className="relative overflow-hidden group px-4 py-2"
               size="sm"
               data-clickable="true"
+              aria-label="Navigate to contact form"
             >
               <span className="relative z-10 flex items-center space-x-2">
                 <span>Оставить заявку</span>
-                <ArrowRight className="h-3 w-3 transition-transform group-hover:translate-x-1" />
+                <ArrowRight className="h-3 w-3 transition-transform group-hover:translate-x-1" aria-hidden="true" />
               </span>
             </Button>
           </div>
@@ -175,7 +184,9 @@ export const Header: React.FC = () => {
           <button
             className="lg:hidden p-2 rounded-lg hover:bg-white/10 transition-colors active:scale-90"
             onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-            aria-label="Меню"
+            aria-label={isMobileMenuOpen ? "Закрыть меню" : "Открыть меню"}
+            aria-expanded={isMobileMenuOpen}
+            aria-controls="mobile-menu"
             data-clickable="true"
           >
             <div className={cn(
@@ -192,12 +203,17 @@ export const Header: React.FC = () => {
         </div>
 
         {/* Мобильное меню */}
-        <div className={cn(
-          "lg:hidden overflow-hidden transition-all duration-300 ease-in-out",
-          isMobileMenuOpen 
-            ? "max-h-96 opacity-100" 
-            : "max-h-0 opacity-0 hidden"
-        )}>
+        <div
+          id="mobile-menu"
+          role="menu"
+          aria-label="Mobile navigation menu"
+          className={cn(
+            "lg:hidden overflow-hidden transition-all duration-300 ease-in-out",
+            isMobileMenuOpen
+              ? "max-h-96 opacity-100"
+              : "max-h-0 opacity-0 hidden"
+          )}
+        >
           <div className="absolute top-full left-0 right-0 bg-background/95 backdrop-blur-lg border-b border-white/20 shadow-xl z-40">
             <div className="container-custom py-6 space-y-3">
               {navigationItems.map((item, index) => {

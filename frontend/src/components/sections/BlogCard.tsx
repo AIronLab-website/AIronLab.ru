@@ -90,14 +90,15 @@ export function BlogCard({ post, variant = "standard", className, onClick }: Blo
         <div className="relative h-[400px] md:h-[500px] lg:h-[600px] w-full overflow-hidden">
           <Image
             src={post.featuredImage.url}
-            alt={post.featuredImage.alt}
+            alt={post.featuredImage.alt || `Featured image for ${post.title}`}
             fill
             className="object-cover transition-transform duration-700 group-hover:scale-110"
             sizes="(max-width: 768px) 100vw, (max-width: 1200px) 80vw, 1200px"
             priority
+            role="img"
           />
           {/* Gradient Overlay */}
-          <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/40 to-transparent" />
+          <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/40 to-transparent" aria-hidden="true" />
         </div>
 
         {/* Content Overlay */}
@@ -201,17 +202,19 @@ export function BlogCard({ post, variant = "standard", className, onClick }: Blo
         <div className="relative h-48 md:h-56 w-full overflow-hidden">
           <Image
             src={post.featuredImage.url}
-            alt={post.featuredImage.alt}
+            alt={post.featuredImage.alt || `Featured image for ${post.title}`}
             fill
             className="object-cover transition-transform duration-500 group-hover:scale-110"
             sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
             loading="lazy"
+            role="img"
           />
           {/* Category Badge Overlay */}
           <div className="absolute top-4 left-4">
             <Badge
               className="bg-accent text-white hover:bg-accent/90"
               style={{ backgroundColor: post.category.color || "#6366F1" }}
+              aria-label={`Category: ${post.category.name}`}
             >
               {post.category.name}
             </Badge>
@@ -292,11 +295,12 @@ export function BlogCard({ post, variant = "standard", className, onClick }: Blo
       <div className="relative h-20 w-20 md:h-24 md:w-24 flex-shrink-0 overflow-hidden rounded-lg">
         <Image
           src={post.featuredImage.url}
-          alt={post.featuredImage.alt}
+          alt={post.featuredImage.alt || `Featured image for ${post.title}`}
           fill
           className="object-cover transition-transform duration-500 group-hover:scale-110"
           sizes="(max-width: 768px) 80px, 96px"
           loading="lazy"
+          role="img"
         />
       </div>
 

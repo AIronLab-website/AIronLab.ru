@@ -56,12 +56,16 @@ export default function BlogPage() {
   return (
     <>
       <BlogHeader />
-      <main className="min-h-screen bg-gradient-to-br from-gray-50 to-white py-20">
+      <main
+        role="main"
+        aria-label="Blog page content"
+        className="min-h-screen bg-gradient-to-br from-gray-50 to-white py-20"
+      >
         <div className="container-custom">
           {/* Заголовок блога */}
           <div className="text-center mb-16">
             <div className="inline-flex items-center space-x-2 bg-accent/10 border border-accent/20 rounded-full px-6 py-3 mb-8">
-              <Tag className="h-4 w-4 text-accent" />
+              <Tag className="h-4 w-4 text-accent" aria-hidden="true" />
               <span className="text-sm font-medium text-accent">
                 Блог AIronLab
               </span>
@@ -89,8 +93,9 @@ export default function BlogPage() {
             <a
               href="/"
               className="inline-flex items-center space-x-2 px-6 py-3 bg-white border border-gray-200 rounded-full text-gray-700 hover:bg-gray-50 hover:border-accent/30 transition-all duration-200"
+              aria-label="Return to homepage"
             >
-              <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 19l-7-7m0 0l7-7m-7 7h18" />
               </svg>
               <span>Вернуться на главную</span>

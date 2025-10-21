@@ -99,7 +99,7 @@ export function TagFilter({
             "mobile-friendly-touch"
           )}
           role="group"
-          aria-label="Tag filter buttons"
+          aria-label="Filter posts by tag"
         >
           {/* All Tags Button */}
           <button
@@ -114,7 +114,7 @@ export function TagFilter({
                 : "bg-gray-100 text-gray-700 hover:bg-gray-200 hover:scale-105"
             )}
             aria-pressed={isAllActive}
-            aria-label="Show all posts"
+            aria-label="Show all posts without filtering"
           >
             Все
           </button>
@@ -138,7 +138,7 @@ export function TagFilter({
                     : "bg-gray-100 text-gray-700 hover:bg-gray-200 hover:scale-105"
                 )}
                 aria-pressed={isActive}
-                aria-label={`Filter by ${tag.name} tag${tag.postCount ? ` (${tag.postCount} posts)` : ""}`}
+                aria-label={`${isActive ? "Remove" : "Filter by"} ${tag.name} tag${tag.postCount ? `, ${tag.postCount} posts available` : ""}`}
               >
               {/* Active Indicator Animation */}
               {isActive && (

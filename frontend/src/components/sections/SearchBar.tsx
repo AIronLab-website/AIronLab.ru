@@ -102,22 +102,6 @@ export function SearchBar({
     }
   };
 
-  // Global keyboard shortcut (Cmd/Ctrl + K) to focus search
-  useEffect(() => {
-    const handleGlobalKeyDown = (event: KeyboardEvent) => {
-      // Check for Cmd+K (Mac) or Ctrl+K (Windows/Linux)
-      if ((event.metaKey || event.ctrlKey) && event.key === "k") {
-        event.preventDefault();
-        inputRef.current?.focus();
-        inputRef.current?.select();
-      }
-    };
-
-    window.addEventListener("keydown", handleGlobalKeyDown);
-    return () => {
-      window.removeEventListener("keydown", handleGlobalKeyDown);
-    };
-  }, []);
 
   // Cleanup timer on unmount
   useEffect(() => {
@@ -132,7 +116,11 @@ export function SearchBar({
   const showMinCharWarning = searchQuery.length > 0 && searchQuery.length < minCharacters;
 
   return (
-    <div className={cn("w-full", className)}>
+    <div
+      role="search"
+      aria-label="Search blog posts"
+      className={cn("w-full", className)}
+    >
       {/* Search Input Container */}
       <div
         className={cn(
@@ -152,9 +140,13 @@ export function SearchBar({
         </div>
 
         {/* Input Field */}
+        <label htmlFor="blog-search" className="sr-only">
+          Search blog posts
+        </label>
         <Input
+          id="blog-search"
           ref={inputRef}
-          type="text"
+          type="search"
           value={searchQuery}
           onChange={handleChange}
           onKeyDown={handleKeyDown}
@@ -227,18 +219,6 @@ export function SearchBar({
         </div>
       )}
 
-      {/* Keyboard Shortcut Hint */}
-      {!searchQuery && (
-        <div className="mt-2 text-xs text-muted-foreground/70 flex items-center gap-2">
-          <span>Нажмите</span>
-          <kbd className="px-2 py-1 bg-gray-100 border border-gray-300 rounded text-xs font-mono">
-            {typeof navigator !== "undefined" && navigator.platform.includes("Mac") ? "⌘" : "Ctrl"}
-          </kbd>
-          <span>+</span>
-          <kbd className="px-2 py-1 bg-gray-100 border border-gray-300 rounded text-xs font-mono">K</kbd>
-          <span>для быстрого поиска</span>
-        </div>
-      )}
     </div>
   );
 }
@@ -281,7 +261,11 @@ export function CompactSearchBar({
   };
 
   return (
-    <div className={cn("relative", className)}>
+    <div
+      role="search"
+      aria-label="Compact search"
+      className={cn("relative", className)}
+    >
       {isExpanded ? (
         <div
           className={cn(
@@ -291,9 +275,13 @@ export function CompactSearchBar({
           )}
         >
           <Search className="h-5 w-5 text-muted-foreground" aria-hidden="true" />
+          <label htmlFor="compact-search" className="sr-only">
+            Search
+          </label>
           <Input
+            id="compact-search"
             ref={inputRef}
-            type="text"
+            type="search"
             value={searchQuery}
             onChange={handleChange}
             placeholder={placeholder}
@@ -304,6 +292,7 @@ export function CompactSearchBar({
             onClick={handleToggle}
             className="touch-target-icon hover:bg-accent/10 rounded transition-colors"
             aria-label="Close search"
+            aria-expanded={isExpanded}
           >
             <X className="h-5 w-5" aria-hidden="true" />
           </button>
@@ -319,6 +308,7 @@ export function CompactSearchBar({
             "focus:outline-none focus:ring-2 focus:ring-accent"
           )}
           aria-label="Open search"
+          aria-expanded={isExpanded}
         >
           <Search className="h-5 w-5" aria-hidden="true" />
         </button>

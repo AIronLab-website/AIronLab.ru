@@ -144,58 +144,59 @@ export function ShareBar({
         icon: Twitter,
         onClick: shareOnTwitter,
         color: "hover:bg-[#1DA1F2] hover:text-white",
-        ariaLabel: "Поделиться в Twitter",
+        ariaLabel: `Share article "${title}" on Twitter`,
       },
       {
         name: "LinkedIn",
         icon: Linkedin,
         onClick: shareOnLinkedIn,
         color: "hover:bg-[#0077B5] hover:text-white",
-        ariaLabel: "Поделиться в LinkedIn",
+        ariaLabel: `Share article "${title}" on LinkedIn`,
       },
       {
         name: "Facebook",
         icon: Facebook,
         onClick: shareOnFacebook,
         color: "hover:bg-[#1877F2] hover:text-white",
-        ariaLabel: "Поделиться в Facebook",
+        ariaLabel: `Share article "${title}" on Facebook`,
       },
       {
         name: "Telegram",
         icon: Send,
         onClick: shareOnTelegram,
         color: "hover:bg-[#0088CC] hover:text-white",
-        ariaLabel: "Поделиться в Telegram",
+        ariaLabel: `Share article "${title}" on Telegram`,
       },
       {
         name: "Email",
         icon: Mail,
         onClick: shareViaEmail,
         color: "hover:bg-gray-600 hover:text-white",
-        ariaLabel: "Поделиться по email",
+        ariaLabel: `Share article "${title}" via email`,
       },
       {
         name: "Copy",
         icon: copied ? Check : Link2,
         onClick: copyLink,
         color: copied ? "bg-green-500 text-white" : "hover:bg-accent hover:text-white",
-        ariaLabel: "Скопировать ссылку",
+        ariaLabel: copied ? "Link copied to clipboard" : `Copy link to article "${title}"`,
       },
     ],
-    [copied, shareOnTwitter, shareOnLinkedIn, shareOnFacebook, shareOnTelegram, shareViaEmail, copyLink]
+    [copied, title, shareOnTwitter, shareOnLinkedIn, shareOnFacebook, shareOnTelegram, shareViaEmail, copyLink]
   );
 
   return (
     <>
       {/* Desktop Floating Share Bar */}
       <aside
+        role="complementary"
         className={cn(
           "hidden lg:block fixed left-8 top-1/2 -translate-y-1/2 z-40",
           "transition-all duration-300",
           isVisible ? "opacity-100 translate-x-0" : "opacity-0 -translate-x-full pointer-events-none",
           className
         )}
-        aria-label="Панель социальных сетей"
+        aria-label="Social sharing options"
       >
         <div className="flex flex-col gap-3 p-4 rounded-2xl bg-white/80 backdrop-blur-md border border-gray-200 shadow-lg">
           {/* Share Label */}
@@ -242,7 +243,7 @@ export function ShareBar({
                 <Button
                   onClick={nativeShare}
                   className="flex-1 bg-accent hover:bg-accent/90 text-white rounded-lg py-6"
-                  aria-label="Поделиться"
+                  aria-label={`Share article "${title}" using native share`}
                 >
                   <Share2 className="h-5 w-5 mr-2" aria-hidden="true" />
                   <span className="font-medium">Поделиться</span>
@@ -250,13 +251,13 @@ export function ShareBar({
               )}
 
               {/* Quick Share Buttons */}
-              <div className="flex gap-2">
+              <div className="flex gap-2" role="group" aria-label="Quick share options">
                 <Button
                   variant="outline"
                   size="icon"
                   onClick={shareOnTwitter}
                   className="h-12 w-12 rounded-lg"
-                  aria-label="Поделиться в Twitter"
+                  aria-label={`Share article "${title}" on Twitter`}
                 >
                   <Twitter className="h-5 w-5" aria-hidden="true" />
                 </Button>
@@ -265,7 +266,7 @@ export function ShareBar({
                   size="icon"
                   onClick={shareOnTelegram}
                   className="h-12 w-12 rounded-lg"
-                  aria-label="Поделиться в Telegram"
+                  aria-label={`Share article "${title}" on Telegram`}
                 >
                   <Send className="h-5 w-5" aria-hidden="true" />
                 </Button>
@@ -277,7 +278,7 @@ export function ShareBar({
                     "h-12 w-12 rounded-lg",
                     copied && "bg-green-500 text-white border-green-500"
                   )}
-                  aria-label="Скопировать ссылку"
+                  aria-label={copied ? "Link copied to clipboard" : `Copy link to article "${title}"`}
                 >
                   {copied ? (
                     <Check className="h-5 w-5" aria-hidden="true" />

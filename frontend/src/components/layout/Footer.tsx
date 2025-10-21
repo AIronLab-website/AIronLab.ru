@@ -13,27 +13,36 @@ export const Footer: React.FC = () => {
   ];
 
   return (
-    <footer className="bg-gray-900 border-t border-gray-800">
+    <footer
+      role="contentinfo"
+      aria-label="Site footer"
+      className="bg-gray-900 border-t border-gray-800"
+    >
       <div className="container-custom py-6">
         <div className="flex flex-col sm:flex-row justify-between items-center space-y-4 sm:space-y-0">
           {/* Копирайт */}
-          <div className="text-gray-400 text-sm">
+          <div className="text-gray-400 text-sm" role="contentinfo">
             © {currentYear} AIronLab. Все права защищены.
           </div>
-          
+
           {/* Правовые ссылки */}
-          <div className="flex flex-wrap justify-center sm:justify-end gap-4 sm:gap-6">
+          <nav
+            role="navigation"
+            aria-label="Legal and policy links"
+            className="flex flex-wrap justify-center sm:justify-end gap-4 sm:gap-6"
+          >
             {legalLinks.map((link, index) => (
               <a
                 key={index}
                 href={link.href}
                 data-clickable="true"
+                aria-label={`View ${link.name}`}
                 className="text-gray-400 hover:text-white text-sm transition-colors duration-200"
               >
                 {link.name}
               </a>
             ))}
-          </div>
+          </nav>
         </div>
       </div>
     </footer>
