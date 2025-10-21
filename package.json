@@ -1,4 +1,15 @@
 {
+  "name": "aironlab-monorepo",
+  "version": "1.0.0",
+  "private": true,
+  "scripts": {
+    "dev": "npm run dev --prefix frontend",
+    "build": "npm run build --prefix frontend",
+    "start": "npm run start --prefix frontend",
+    "lint": "npm run lint --prefix frontend",
+    "dev:backend": "npm run dev --prefix backend",
+    "install:all": "npm install && cd frontend && npm install && cd ../backend && npm install"
+  },
   "devDependencies": {
     "shadcn": "^3.4.0"
   }
