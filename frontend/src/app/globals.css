@@ -527,20 +527,12 @@
 
   /* Responsive touch targets: 44px mobile, 36px desktop */
   .touch-target-responsive {
-    @apply min-h-[44px] min-w-[44px];
-
-    @screen md {
-      @apply min-h-[36px] min-w-[36px];
-    }
+    @apply min-h-[44px] min-w-[44px] md:min-h-[36px] md:min-w-[36px];
   }
 
   /* Icon button specific: ensures proper padding */
   .touch-target-icon {
-    @apply min-h-[44px] min-w-[44px] flex items-center justify-center;
-
-    @screen md {
-      @apply min-h-[40px] min-w-[40px];
-    }
+    @apply min-h-[44px] min-w-[44px] md:min-h-[40px] md:min-w-[40px] flex items-center justify-center;
   }
 
   /* Group of touch targets with proper spacing (min 8px) */

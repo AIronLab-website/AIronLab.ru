@@ -103,7 +103,7 @@ export function BlogCard({ post, variant = "standard", className, onClick }: Blo
         {/* Content Overlay */}
         <div className="absolute bottom-0 left-0 right-0 p-6 md:p-8 lg:p-12">
           {/* Featured Badge + Category */}
-          <div className="mb-4 flex flex-wrap items-center gap-3">
+          <div className="mb-4 touch-targets-group flex-wrap items-center">
             <Badge className="bg-gradient-to-r from-yellow-400 to-orange-500 text-white hover:from-yellow-500 hover:to-orange-600 text-sm md:text-base px-4 py-1.5 flex items-center gap-2">
               <Sparkles className="h-4 w-4" aria-hidden="true" />
               <span>Рекомендуем</span>
@@ -156,7 +156,7 @@ export function BlogCard({ post, variant = "standard", className, onClick }: Blo
 
           {/* Tags */}
           {post.tags.length > 0 && (
-            <div className="flex flex-wrap gap-2 mt-6">
+            <div className="touch-targets-group flex-wrap mt-6">
               {post.tags.slice(0, 3).map((tag) => (
                 <Badge
                   key={tag.slug}
@@ -232,7 +232,7 @@ export function BlogCard({ post, variant = "standard", className, onClick }: Blo
 
           {/* Tags */}
           {post.tags.length > 0 && (
-            <div className="flex flex-wrap gap-2 mb-4">
+            <div className="touch-targets-group flex-wrap mb-4">
               {post.tags.slice(0, 2).map((tag) => (
                 <Badge key={tag.slug} variant="outline" className="text-xs">
                   #{tag.name}

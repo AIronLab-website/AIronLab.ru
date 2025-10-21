@@ -113,7 +113,7 @@ export function BookmarkButton({
         size="icon"
         onClick={handleToggle}
         className={cn(
-          "h-10 w-10 rounded-lg transition-all duration-200",
+          "touch-target-icon rounded-lg transition-all duration-200",
           "hover:scale-110",
           isBookmarked
             ? "text-accent bg-accent/10 hover:bg-accent/20"
