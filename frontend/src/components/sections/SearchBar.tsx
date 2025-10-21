@@ -190,13 +190,11 @@ export function SearchBar({
             <button
               onClick={handleClear}
               className={cn(
-                "flex items-center justify-center",
-                "h-8 w-8 md:h-10 md:w-10 rounded-lg",
+                "touch-target-icon rounded-lg",
                 "text-muted-foreground hover:text-accent",
                 "hover:bg-accent/10",
                 "transition-all duration-200",
-                "focus:outline-none focus:ring-2 focus:ring-accent focus:ring-offset-2",
-                "mobile-friendly-touch"
+                "focus:outline-none focus:ring-2 focus:ring-accent focus:ring-offset-2"
               )}
               aria-label="Clear search"
               type="button"
@@ -304,7 +302,7 @@ export function CompactSearchBar({
           />
           <button
             onClick={handleToggle}
-            className="p-1 hover:bg-accent/10 rounded transition-colors"
+            className="touch-target-icon hover:bg-accent/10 rounded transition-colors"
             aria-label="Close search"
           >
             <X className="h-5 w-5" aria-hidden="true" />
@@ -314,8 +312,7 @@ export function CompactSearchBar({
         <button
           onClick={handleToggle}
           className={cn(
-            "flex items-center justify-center",
-            "h-10 w-10 rounded-lg",
+            "touch-target-icon rounded-lg",
             "glass-effect text-foreground hover:text-accent",
             "hover:bg-accent/10",
             "transition-all duration-200",
