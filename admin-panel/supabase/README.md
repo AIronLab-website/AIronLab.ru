@@ -6,11 +6,17 @@
 
 ```
 supabase/
-├── README.md                      # Этот файл
-├── SETUP.md                       # Подробная инструкция по настройке
+├── README.md                           # Этот файл
+├── SETUP.md                            # AIL-237: Подробная инструкция по настройке
+├── STORAGE_SETUP.md                    # AIL-238: Детальное руководство по Storage
+├── QUICK_START_238.md                  # AIL-238: Быстрый старт (10 минут)
+├── STORAGE_STRUCTURE.md                # AIL-238: Визуальная схема Storage
+├── AIL-238-CHECKLIST.md                # AIL-238: Чек-лист для выполнения
+├── VERIFICATION_QUERIES.sql            # AIL-238: SQL запросы для проверки
 ├── migrations/
-│   └── 001_initial_schema.sql    # Начальная схема БД
-└── .env.example                   # Пример переменных окружения
+│   ├── 001_initial_schema.sql         # AIL-237: Начальная схема БД
+│   └── 002_rls_and_storage_policies.sql # AIL-238: RLS и Storage policies
+└── .env.example                        # Пример переменных окружения
 ```
 
 ## 🚀 Быстрый старт
@@ -169,10 +175,20 @@ ORDER BY posts_count DESC;
 
 ## 🎯 Следующие шаги
 
-- [ ] AIL-238: Настроить Storage buckets (blog-images, project-images)
-- [ ] AIL-238: Настроить RLS policies
-- [ ] AIL-239: Создать админ пользователя
-- [ ] AIL-239: Сгенерировать TypeScript types
+### Выполнение задач
+
+- [x] **AIL-237**: Настроить Supabase и PostgreSQL схему ✅
+- [x] **AIL-238**: Настроить Storage buckets и RLS policies ✅
+  - 📖 Быстрый старт: [`QUICK_START_238.md`](./QUICK_START_238.md)
+  - 📖 Детальная инструкция: [`STORAGE_SETUP.md`](./STORAGE_SETUP.md)
+  - 📖 Структура Storage: [`STORAGE_STRUCTURE.md`](./STORAGE_STRUCTURE.md)
+  - ✅ Чек-лист: [`AIL-238-CHECKLIST.md`](./AIL-238-CHECKLIST.md)
+  - 🔍 Проверка: [`VERIFICATION_QUERIES.sql`](./VERIFICATION_QUERIES.sql)
+- [ ] **AIL-239**: Создать админ пользователя и TypeScript types (Документация готова)
+  - 🚀 Быстрый старт: [`QUICK_START_239.md`](./QUICK_START_239.md)
+  - 👤 Админ пользователь: [`ADMIN_USER_SETUP.md`](./ADMIN_USER_SETUP.md)
+  - 🔤 TypeScript types: [`TYPESCRIPT_TYPES_SETUP.md`](./TYPESCRIPT_TYPES_SETUP.md)
+  - 📊 Итоговый отчет: [`../docs/AIL-239-SUMMARY.md`](../docs/AIL-239-SUMMARY.md)
 
 ## 📞 Контакты
 
