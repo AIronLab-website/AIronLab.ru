@@ -19,7 +19,7 @@ const navigationItems: NavigationItem[] = [
   { name: "Проекты", href: "#projects", id: "projects" },
   { name: "Тарифы", href: "#pricing", id: "pricing" },
   { name: "FAQ", href: "#faq", id: "faq" },
-  { name: "Блог", href: "/blog", id: "blog", isExternal: true },
+  // { name: "Блог", href: "/blog", id: "blog", isExternal: true }, // Временно скрыто до завершения разработки
 ];
 
 export const Header: React.FC = () => {
