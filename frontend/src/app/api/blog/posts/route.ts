@@ -26,25 +26,33 @@ export async function GET(request: NextRequest) {
 
     // Парсинг query параметров
     const searchParams = request.nextUrl.searchParams
-    const filters = postFiltersSchema.parse({
-      status: searchParams.get('status') || 'all',
-      category_id: searchParams.get('category_id'),
-      author_id: searchParams.get('author_id'),
-      search: searchParams.get('search'),
-      page: searchParams.get('page'),
-      limit: searchParams.get('limit'),
-      sort: searchParams.get('sort'),
-      order: searchParams.get('order'),
+    const result = postFiltersSchema.safeParse({
+      status: searchParams.get('status') || undefined,
+      category_id: searchParams.get('category_id') || undefined,
+      author_id: searchParams.get('author_id') || undefined,
+      search: searchParams.get('search') || undefined,
+      page: searchParams.get('page') || undefined,
+      limit: searchParams.get('limit') || undefined,
+      sort: searchParams.get('sort') || undefined,
+      order: searchParams.get('order') || undefined,
     })
+
+    if (!result.success) {
+      console.error('Validation error:', result.error.flatten())
+      return NextResponse.json(
+        { error: 'Invalid query parameters', details: result.error.flatten() },
+        { status: 400 }
+      )
+    }
+
+    const filters = result.data
 
     // Строим запрос
     let query = supabase
       .from('blog_posts')
       .select(`
         *,
-        author:blog_authors(id, name, email, avatar_url),
-        category:blog_categories(id, name, slug),
-        post_tags:blog_post_tags(tag:blog_tags(id, name, slug))
+        category:blog_categories(id, name, slug)
       `, { count: 'exact' })
 
     // Фильтр по статусу
@@ -116,7 +124,17 @@ export async function POST(request: NextRequest) {
 
     // Парсинг и валидация тела запроса
     const body = await request.json()
-    const input = createPostSchema.parse(body)
+    const result = createPostSchema.safeParse(body)
+
+    if (!result.success) {
+      console.error('Validation error:', result.error.flatten())
+      return NextResponse.json(
+        { error: 'Неверные данные', details: result.error.flatten() },
+        { status: 400 }
+      )
+    }
+
+    const input = result.data
 
     // Генерация slug если не указан
     const slug = input.slug || generateSlug(input.title)

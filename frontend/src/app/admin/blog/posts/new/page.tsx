@@ -4,8 +4,9 @@
  * Страница создания нового поста
  */
 
-import { requireAuth, getAdminProfile } from '@/lib/supabase/auth'
+import { requireAuth, getAdminProfile, getCurrentUser } from '@/lib/supabase/auth'
 import { PostForm } from '@/components/admin/blog/PostForm'
+import { createClient, createAdminClient } from '@/lib/supabase/server'
 import { redirect } from 'next/navigation'
 
 export const metadata = {
@@ -13,26 +14,44 @@ export const metadata = {
 }
 
 export default async function NewPostPage() {
-  const session = await requireAuth()
-  const profile = await getAdminProfile()
+  await requireAuth()
+  const user = await getCurrentUser()
+  
+  if (!user) {
+    redirect('/admin/login')
+  }
+
+  let profile = await getAdminProfile()
+
+  // Если профиля нет, создаем автоматически (используем админский клиент для обхода RLS)
+  if (!profile) {
+    const adminSupabase = createAdminClient()
+    const { data: newProfile, error } = await adminSupabase
+      .from('blog_authors')
+      .insert({
+        name: user.email?.split('@')[0] || 'Admin',
+        email: user.email!,
+        bio: 'Администратор блога',
+        role: 'admin',
+      })
+      .select()
+      .single()
+
+    if (error || !newProfile) {
+      console.error('Error creating author profile:', error)
+      console.error('Error details:', JSON.stringify(error, null, 2))
+      // Перенаправляем на страницу со списком постов с сообщением об ошибке
+      redirect('/admin/blog/posts')
+    }
+
+    console.log('✅ Author profile created:', newProfile)
+    profile = newProfile
+  }
 
   if (!profile) {
     redirect('/admin/blog/posts')
   }
 
-  return (
-    <div className="space-y-6">
-      {/* Header */}
-      <div>
-        <h1 className="text-3xl font-bold text-black">Создать статью</h1>
-        <p className="text-slate-600 mt-2">
-          Заполните форму для создания новой статьи блога
-        </p>
-      </div>
-
-      {/* Form */}
-      <PostForm authorId={profile.id} />
-    </div>
-  )
+  return <PostForm authorId={profile.id} />
 }
 

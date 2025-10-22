@@ -5,7 +5,7 @@
  */
 
 import { requireAuth, getAdminProfile } from '@/lib/supabase/auth'
-import { createServerClient } from '@/lib/supabase/server'
+import { createClient } from '@/lib/supabase/server'
 import { PostForm } from '@/components/admin/blog/PostForm'
 import { notFound, redirect } from 'next/navigation'
 
@@ -21,7 +21,7 @@ export default async function EditPostPage({ params }: { params: { id: string } 
     redirect('/admin/blog/posts')
   }
 
-  const supabase = createServerClient()
+  const supabase = createClient()
 
   // Fetch post data
   const { data: post, error } = await supabase

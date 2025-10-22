@@ -7,7 +7,7 @@ export default function MetrikaNoscript() {
           style={{ position: 'absolute', left: '-9999px' }} 
           alt=""
           loading="lazy"
-          fetchpriority="low"
+          fetchPriority="low"
         />
       </div>
     </noscript>

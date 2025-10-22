@@ -10,7 +10,7 @@
  */
 
 import { requireAuth, getCurrentUser, getAdminProfile } from '@/lib/supabase/auth'
-import { signOut } from '@/lib/supabase/auth'
+import { signOut } from '@/lib/supabase/actions'
 
 export default async function AdminTestPage() {
   // Проверяем аутентификацию (редиректит на /admin/login если не авторизован)

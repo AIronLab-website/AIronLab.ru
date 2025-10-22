@@ -8,7 +8,6 @@
  */
 
 import { getCurrentUser, getAdminProfile } from '@/lib/supabase/auth'
-import { redirect } from 'next/navigation'
 import { AdminSidebar } from '@/components/admin/layout/AdminSidebar'
 import { AdminHeader } from '@/components/admin/layout/AdminHeader'
 
@@ -25,11 +24,12 @@ export default async function AdminLayout({
 }: {
   children: React.ReactNode
 }) {
-  // Проверяем аутентификацию
+  // Middleware уже проверяет аутентификацию, здесь только получаем данные
   const user = await getCurrentUser()
   
+  // Если пользователя нет (например, на странице логина), показываем только children
   if (!user) {
-    redirect('/admin/login')
+    return <>{children}</>
   }
 
   // Получаем профиль администратора

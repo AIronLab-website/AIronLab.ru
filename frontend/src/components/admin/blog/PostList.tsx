@@ -81,13 +81,20 @@ export function PostList() {
       }
 
       const response = await fetch(`/api/blog/posts?${params}`)
-      if (!response.ok) throw new Error('Failed to fetch posts')
+      
+      if (!response.ok) {
+        const errorData = await response.json()
+        console.error('API Error:', errorData)
+        throw new Error(errorData.error || 'Failed to fetch posts')
+      }
 
       const data = await response.json()
       setPosts(data.posts || [])
       setPagination(data.pagination)
     } catch (error) {
       console.error('Error fetching posts:', error)
+      // Показываем пустой список при ошибке
+      setPosts([])
     } finally {
       setLoading(false)
     }

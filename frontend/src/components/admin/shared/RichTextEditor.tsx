@@ -37,6 +37,7 @@ interface RichTextEditorProps {
 
 export function RichTextEditor({ content, onChange, placeholder }: RichTextEditorProps) {
   const editor = useEditor({
+    immediatelyRender: false, // Исправление для SSR
     extensions: [
       StarterKit,
       Link.configure({

@@ -8,48 +8,78 @@
  * 4. Обновляет сессию пользователя
  */
 
-import { updateSession } from '@/lib/supabase/middleware'
-import { createServerClient } from '@supabase/ssr'
+import { createServerClient, type CookieOptions } from '@supabase/ssr'
 import { NextResponse, type NextRequest } from 'next/server'
 import type { Database } from '@/types/supabase'
 
 export async function middleware(request: NextRequest) {
-  // Обновляем сессию пользователя
-  const response = await updateSession(request)
+  let response = NextResponse.next({
+    request: {
+      headers: request.headers,
+    },
+  })
 
-  // Проверяем защищенные роуты только для /admin
-  if (request.nextUrl.pathname.startsWith('/admin')) {
-    // Создаем Supabase клиент для проверки auth
-    const supabase = createServerClient<Database>(
-      process.env.NEXT_PUBLIC_SUPABASE_URL!,
-      process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
-      {
-        cookies: {
-          get(name: string) {
-            return request.cookies.get(name)?.value
-          },
-          set() {},
-          remove() {},
+  const supabase = createServerClient<Database>(
+    process.env.NEXT_PUBLIC_SUPABASE_URL!,
+    process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
+    {
+      cookies: {
+        get(name: string) {
+          return request.cookies.get(name)?.value
         },
-      }
-    )
-
-    // Получаем текущую сессию
-    const {
-      data: { session },
-    } = await supabase.auth.getSession()
-
-    // Если нет сессии и это не страница логина → редирект на /admin/login
-    if (!session && !request.nextUrl.pathname.startsWith('/admin/login')) {
-      const redirectUrl = new URL('/admin/login', request.url)
-      redirectUrl.searchParams.set('redirectedFrom', request.nextUrl.pathname)
-      return NextResponse.redirect(redirectUrl)
+        set(name: string, value: string, options: CookieOptions) {
+          request.cookies.set({
+            name,
+            value,
+            ...options,
+          })
+          response = NextResponse.next({
+            request: {
+              headers: request.headers,
+            },
+          })
+          response.cookies.set({
+            name,
+            value,
+            ...options,
+          })
+        },
+        remove(name: string, options: CookieOptions) {
+          request.cookies.set({
+            name,
+            value: '',
+            ...options,
+          })
+          response = NextResponse.next({
+            request: {
+              headers: request.headers,
+            },
+          })
+          response.cookies.set({
+            name,
+            value: '',
+            ...options,
+          })
+        },
+      },
     }
+  )
 
-    // Если есть сессия и пользователь на /admin/login → редирект в админку
-    if (session && request.nextUrl.pathname === '/admin/login') {
-      return NextResponse.redirect(new URL('/admin', request.url))
-    }
+  // Обновляем сессию
+  const {
+    data: { user },
+  } = await supabase.auth.getUser()
+
+  // Если пользователь НЕ авторизован и пытается попасть НЕ на login → редирект на login
+  if (!user && !request.nextUrl.pathname.startsWith('/admin/login')) {
+    const redirectUrl = new URL('/admin/login', request.url)
+    redirectUrl.searchParams.set('redirectedFrom', request.nextUrl.pathname)
+    return NextResponse.redirect(redirectUrl)
+  }
+
+  // Если пользователь авторизован и на странице login → редирект в админку
+  if (user && request.nextUrl.pathname.startsWith('/admin/login')) {
+    return NextResponse.redirect(new URL('/admin', request.url))
   }
 
   return response

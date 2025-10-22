@@ -37,7 +37,6 @@ docker compose -f ./docker-compose.yml down
 ## 5. Сборка и запуск контейнеров в фоне
 
 ```bash
-docker compose -f ./docker-compose.yml up --build -d
 ```
 
 ---
