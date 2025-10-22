@@ -27,7 +27,7 @@ jobs:
           echo "Current directory: $(pwd)"
           echo "Trying to cd to: ${{ secrets.WORK_DIR }}"
           
-          cd /home/deploy-user/AIronLab.ru
+          cd ${{ secrets.WORK_DIR }}
           
           echo "Successfully changed to: $(pwd)"
           echo "📦 Pulling latest code..."
