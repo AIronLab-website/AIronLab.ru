@@ -23,8 +23,13 @@ jobs:
           ssh -i ~/.ssh/id_rsa ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }} << 'DEPLOY_SCRIPT'
           set -e
           
+          echo "Current user: $(whoami)"
+          echo "Current directory: $(pwd)"
+          echo "Trying to cd to: ${{ secrets.WORK_DIR }}"
+          
           cd ${{ secrets.WORK_DIR }}
           
+          echo "Successfully changed to: $(pwd)"
           echo "📦 Pulling latest code..."
           git pull origin main
           
