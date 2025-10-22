@@ -1,0 +1,59 @@
+name: Deploy to VPS
+
+on:
+  push:
+    branches:
+      - main
+      - master
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Install SSH key
+        run: |
+          mkdir -p ~/.ssh
+          echo "${{ secrets.SSH_PRIVATE_KEY }}" > ~/.ssh/id_rsa
+          chmod 600 ~/.ssh/id_rsa
+          ssh-keyscan -H ${{ secrets.SSH_HOST }} >> ~/.ssh/known_hosts 2>/dev/null || true
+
+      - name: Deploy to VPS
+        run: |
+          ssh -i ~/.ssh/id_rsa ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }} << 'DEPLOY_SCRIPT'
+          set -e
+          
+          cd ${{ secrets.WORK_DIR }}
+          
+          echo "📦 Pulling latest code..."
+          git pull origin main
+          
+          echo "🔨 Stop running containers..."
+          docker compose down
+          
+          echo "🚀 Restarting containers..."
+          docker compose up --build -d
+          
+          echo "✅ Deployment successful!"
+          docker compose ps
+          DEPLOY_SCRIPT
+
+      - name: Cleanup old Docker images and cache
+        run: |
+          ssh -i ~/.ssh/id_rsa ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }} << 'CLEANUP_SCRIPT'
+          set -e
+          
+          echo "🧹 Cleaning up Docker..."
+          
+          docker image prune -a -f --filter "until=72h"
+          docker container prune -f
+          docker volume prune -f
+          docker network prune -f
+          
+          echo "✅ Cleanup complete!"
+          docker system df
+          CLEANUP_SCRIPT
+
+      - name: Cleanup SSH key
+        if: always()
+        run: rm -rf ~/.ssh
